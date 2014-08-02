@@ -3,10 +3,10 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
-	public float glideForce = 100f;
 	public float maxGlideSpeed = 20f;
 
 	private bool airborne = true;
+	private float glideSpeedIncrement = .5f;
 
 	// Use this for initialization
 	void Awake () {
@@ -24,17 +24,36 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Glide() {
+		Vector2 movement = rigidbody2D.velocity;
+
 		if(Input.GetKey(KeyCode.LeftArrow) && -rigidbody2D.velocity.x < maxGlideSpeed) {
-			rigidbody2D.AddForce(-Vector2.right * glideForce);
+			movement.x -= glideSpeedIncrement; 
 		}
 		if(Input.GetKey(KeyCode.RightArrow) && rigidbody2D.velocity.x < maxGlideSpeed) {
-			rigidbody2D.AddForce(Vector2.right * glideForce);
+			movement.x += glideSpeedIncrement; 
 		}
 		if(Input.GetKey(KeyCode.UpArrow) && rigidbody2D.velocity.y < maxGlideSpeed) {
-			rigidbody2D.AddForce(Vector2.up * glideForce);
+			movement.y += glideSpeedIncrement; 
 		}
-		if(Input.GetKey(KeyCode.DownArrow) && -rigidbody2D.velocity.y < maxGlideSpeed) {
-			rigidbody2D.AddForce(-Vector2.up * glideForce);
+		if(Input.GetKey(KeyCode.DownArrow) && -rigidbody2D.velocity.x < maxGlideSpeed) {
+			movement.y -= glideSpeedIncrement; 
 		}
+
+		if(!Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.UpArrow)
+			&& !Input.GetKey(KeyCode.DownArrow)) {
+			if(movement.x < 0) {
+				movement.x += glideSpeedIncrement;
+			}
+			if(movement.x > 0) {
+				movement.x -= glideSpeedIncrement;
+			}
+			if(movement.y < 0) {
+				movement.y += glideSpeedIncrement;
+			}
+			if(movement.y > 0) {
+				movement.y -= glideSpeedIncrement;
+			}
+		}
+		rigidbody2D.velocity = movement;
 	}
 }
