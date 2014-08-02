@@ -3,9 +3,9 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
-	public float maxGlideSpeed = 7f;
-	public float glideSpeedIncrement = .8f;
-	public float glideSpeedDecrement = .3f;
+	public float maxGlideSpeed = 15f;
+	public float glideSpeedIncrement = 1.2f;
+	public float glideSpeedDecrement = .6f;
 
 	private bool airborne = true;
 
@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour {
 			} 
 		}
 
-		if(Input.GetAxis("X-Axis") == 0 || Input.GetAxis("Y-Axis") == 0) {
+		if(Input.GetAxis("X-Axis") == 0) {
 			if(movement.x < 0) {
 				if(movement.x + glideSpeedDecrement > 0) {
 					movement.x = 0;
@@ -69,7 +69,10 @@ public class PlayerController : MonoBehaviour {
 					movement.x -= glideSpeedDecrement;
 				}
 			}
-			if(movement.y < 0) {
+		}
+
+		if(Input.GetAxis("Y-Axis") == 0) {
+						if(movement.y < 0) {
 				if(movement.y + glideSpeedDecrement > 0) {
 					movement.y = 0;
 				} else {
@@ -84,6 +87,7 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 		}
+
 		rigidbody2D.velocity = movement;
 	}
 }
