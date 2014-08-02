@@ -70,47 +70,7 @@
 				//return fixed4(uv_p_x, uv_p_x, uv_p_x, tc.a);
 				//return fixed4(uv_p_y, uv_p_y, uv_p_y, tc.a);
 				return fixed4(pc.r, pc.g, pc.b, tc.a);
-				
-				//if (tc.a > 0) {
-				//	return fixed4(pc.r, pc.g, pc.b, tc.a);
-				//} else {
-				//	return fixed4(tc.r, tc.g, tc.b, tc.a);
-				//}
 			}
-
-			
-		//	struct Vertex {
-		//		float4 vertex : POSITION;
-		//		float2 uv_MainTex : TEXCOORD0;
-		//	};
-			
-		//	struct Fragment {
-		//		float4 vertex : POSITION;
-		//		float2 uv_MainTex : TEXCOORD0;
-		//	};
-
-		//	Fragment vert (Vertex v) {
-		//		Fragment f;
-		//		
-		//		f.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
-		//		f.uv_MainTex = v.uv_MainTex;
-		//		return f;
-		//	}
-			
-		//	float4 frag(Fragment IN) : COLOR {
-		//		half4 tc = tex2D(_MainTex, IN.uv_MainTex);
-		//		
-		//		float uv_p_x = tc.r < .25 ? 0 : (tc.r < .5 ? 1 : (tc.r < .75 ? 0 : 1));
-		//		float uv_p_y = tc.r < .25 ? 0 : (tc.r < .5 ? 0 : (tc.r < .75 ? 1 : 1));
-		//		float2 uv_p = float2(uv_p_x, uv_p_y);
-		//		half4 pc = tex2D(_PaletteTex, uv_p);
-		//		
-		//		if (tc.a > 0) {
-		//			return float4(pc.r, pc.g, pc.b, tc.a);
-		//		} else {
-		//			return float4(tc.r, tc.g, tc.b, tc.a);
-		//		}
-		//	}
 			ENDCG
 		}
 	} 
