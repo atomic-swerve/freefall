@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour {
 		Vector2 movement = rigidbody2D.velocity;
 
 		// Accelerate on any axis receiving input.
-		if(Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x < -maxGlideSpeed) {
+		if(Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x > -maxGlideSpeed) {
 			movement.x -= glideAcceleration;
 			if(movement.x < -maxGlideSpeed) {
 				movement.x = -maxGlideSpeed;
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour {
 				movement.y = maxGlideSpeed;
 			}  
 		}
-		if(Input.GetAxis("Y-Axis") < 0 && rigidbody2D.velocity.y < -maxGlideSpeed) {
+		if(Input.GetAxis("Y-Axis") < 0 && rigidbody2D.velocity.y > -maxGlideSpeed) {
 			movement.y -= glideAcceleration; 
 			if(movement.y < -maxGlideSpeed) {
 				movement.y = -maxGlideSpeed;
