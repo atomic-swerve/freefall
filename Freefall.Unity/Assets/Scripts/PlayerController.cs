@@ -4,11 +4,10 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	public float maxGlideSpeed = 15f;
-	public float glideSpeedIncrement = 1.2f;
-	public float glideSpeedDecrement = .6f;
+	public float glideAcceleration = 1.2f;
+	public float glideDeceleration = .6f;
 
-	private bool airborne = true;
-
+	private bool gliding = true;
 
 	// Use this for initialization
 	void Awake () {
@@ -20,7 +19,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		if(airborne) {
+		if(gliding) {
 			Glide();
 		}
 	}
@@ -28,62 +27,58 @@ public class PlayerController : MonoBehaviour {
 	private void Glide() {
 		Vector2 movement = rigidbody2D.velocity;
 
-		if(Input.GetAxis("X-Axis") < 0 && -rigidbody2D.velocity.x < maxGlideSpeed) {
-			movement.x -= glideSpeedIncrement;
+		// Accelerate on any axis receiving input.
+		if(Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x < -maxGlideSpeed) {
+			movement.x -= glideAcceleration;
 			if(movement.x < -maxGlideSpeed) {
 				movement.x = -maxGlideSpeed;
 			} 
 		}
 		if(Input.GetAxis("X-Axis") > 0 && rigidbody2D.velocity.x < maxGlideSpeed) {
-			movement.x += glideSpeedIncrement; 
+			movement.x += glideAcceleration; 
 			if(movement.x > maxGlideSpeed) {
 				movement.x = maxGlideSpeed;
 			} 
 		}
-
 		if(Input.GetAxis("Y-Axis") > 0 && rigidbody2D.velocity.y < maxGlideSpeed) {
-			movement.y += glideSpeedIncrement;
+			movement.y += glideAcceleration;
 			if(movement.y > maxGlideSpeed) {
 				movement.y = maxGlideSpeed;
 			}  
 		}
-		if(Input.GetAxis("Y-Axis") < 0 && -rigidbody2D.velocity.y < maxGlideSpeed) {
-			movement.y -= glideSpeedIncrement; 
+		if(Input.GetAxis("Y-Axis") < 0 && rigidbody2D.velocity.y < -maxGlideSpeed) {
+			movement.y -= glideAcceleration; 
 			if(movement.y < -maxGlideSpeed) {
 				movement.y = -maxGlideSpeed;
 			} 
 		}
 
+		// Decelerate on any axis receiving no input.
 		if(Input.GetAxis("X-Axis") == 0) {
 			if(movement.x < 0) {
-				if(movement.x + glideSpeedDecrement > 0) {
+				movement.x += glideDeceleration;
+				if(movement.x > 0) {
 					movement.x = 0;
-				} else {
-					movement.x += glideSpeedDecrement;
 				}
 			}
 			if(movement.x > 0) {
-				if(movement.x - glideSpeedDecrement < 0) {
+				movement.x -= glideDeceleration;
+				if(movement.x < 0) {
 					movement.x = 0;
-				} else {
-					movement.x -= glideSpeedDecrement;
 				}
 			}
 		}
-
 		if(Input.GetAxis("Y-Axis") == 0) {
-						if(movement.y < 0) {
-				if(movement.y + glideSpeedDecrement > 0) {
+			if(movement.y < 0) {
+				movement.y += glideDeceleration;
+				if(movement.y > 0) {
 					movement.y = 0;
-				} else {
-					movement.y += glideSpeedDecrement;
 				}
 			}
 			if(movement.y > 0) {
-				if(movement.y - glideSpeedDecrement < 0) {
+				movement.y -= glideDeceleration;
+				if(movement.y < 0) {
 					movement.y = 0;
-				} else {
-					movement.y -= glideSpeedDecrement;
 				}
 			}
 		}
