@@ -6,7 +6,8 @@ public class PlayerController : MonoBehaviour {
 
 	private bool gliding = true;
 	private bool grounded = false;
-	private bool shouldJump = false;
+	private bool jumping = false;
+	private bool crouching = false;
 	
 	private Transform groundCheck;
 
@@ -32,7 +33,19 @@ public class PlayerController : MonoBehaviour {
 				DeactivateGlide();
 			}
 			if(Input.GetButtonDown("A")) {
-				shouldJump = true;
+				jumping = true;
+			}
+			if(Input.GetAxis("Y-Axis") < 0) {
+				if(!crouching) {
+					ActivateCrouch();
+				}
+			} else {
+				if(crouching) {
+					DeactivateCrouch();
+				}
+			}
+			if(Input.GetAxis("X-Axis") != 0) {
+				DeactivateCrouch();
 			}
 		} else {
 			if(Input.GetButtonDown("A")) { // If player is not grounded, then the "A" button activates glide mode.
@@ -48,9 +61,9 @@ public class PlayerController : MonoBehaviour {
 			nonGlideMotion.Move();
 		} 
 
-		if(shouldJump) {
+		if(jumping) {
 			jumpMotion.Jump();
-			shouldJump = false;
+			jumping = false;
 		}
 	}
 
@@ -62,5 +75,17 @@ public class PlayerController : MonoBehaviour {
 	private void DeactivateGlide() {
 		rigidbody2D.gravityScale = defaultGravity;
 		gliding = false;
+	}
+
+	public void ActivateCrouch() {
+		Debug.Log("Activating crouch.");
+		crouching = true;
+		// Do all other crouch-related logic here
+	}
+
+	public void DeactivateCrouch() {
+		Debug.Log("Deactivating crouch.");
+		crouching = false;
+		// Do all other crouch-related logic here
 	}
 }
