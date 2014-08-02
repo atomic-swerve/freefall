@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour {
 			} 
 		}
 
-		if(Input.GetAxis("X-Axis") == 0 && Input.GetAxis("Y-Axis") == 0) {
+		if(Input.GetAxis("X-Axis") == 0 || Input.GetAxis("Y-Axis") == 0) {
 			if(movement.x < 0) {
 				if(movement.x + glideSpeedDecrement > 0) {
 					movement.x = 0;
