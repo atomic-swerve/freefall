@@ -99,7 +99,7 @@ public class AutoTile : MonoBehaviour {
 		float x=transform.position.x;
 		float y=transform.position.y;
 		int i, j;
-		Vector2 size=(Vector2)transform.lossyScale;
+		Vector2 size=(Vector2)transform.lossyScale * tileSize;
 		GameObject target;
 		List<GameObject> newContacts=new List<GameObject>();
 		i=0;  j=1 ; try {target=Physics2D.OverlapCircle(new Vector2(x+i*size.x,y+j*size.y), 0.1f, autoTileLayer.value).gameObject; gates[0]=target!=null; if (gates[0]) {newContacts.Add(target);};} catch {gates[0]=false;}
