@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpritePixelSnapping : MonoBehaviour {
-
-	private Transform parent;
+public class SpritePixelSnapping : PixelatedMotion {
 
 	void Start () {
 		Rigidbody2D parentRigidbody = GetComponentInParent<Rigidbody2D>();
@@ -13,10 +11,6 @@ public class SpritePixelSnapping : MonoBehaviour {
 		parent = parentRigidbody.gameObject.transform;
 	}
 	
-	void Update () {
-		int px = Mathf.RoundToInt(parent.position.x);
-		int py = Mathf.RoundToInt(parent.position.y);
-		int pz = Mathf.RoundToInt(parent.position.z);
-		transform.position = new Vector3(px, py, pz);
-	}
+	protected override float GetXOffset () { return 0.0f; }
+	protected override float GetYOffset () { return 0.0f; }
 }
