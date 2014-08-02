@@ -2,18 +2,26 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
+	public float defaultGravity = 15f;
+
 	private bool gliding = true;
 	private bool grounded = false;
+	private bool shouldJump = false;
 	
 	private Transform groundCheck;
+
+	// Motion Controls
 	private GlideMotion glideMotion;
 	private NonGlideMotion nonGlideMotion;
+	private JumpMotion jumpMotion;
 
 	// Use this for initialization
 	void Awake () {
 		groundCheck = transform.Find("groundCheck");
+
 		glideMotion = transform.GetComponent<GlideMotion>();
 		nonGlideMotion = transform.GetComponent<NonGlideMotion>();
+		jumpMotion = transform.GetComponent<JumpMotion>();
 	}
 	
 	// Update is called once per frame
@@ -21,7 +29,14 @@ public class PlayerController : MonoBehaviour {
 		grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
 		if(grounded) {
 			if(gliding) {
-				EndGlide();
+				DeactivateGlide();
+			}
+			if(Input.GetButtonDown("A")) {
+				shouldJump = true;
+			}
+		} else {
+			if(Input.GetButtonDown("A")) { // If player is not grounded, then the "A" button activates glide mode.
+				ActivateGlide();
 			}
 		}
 	}
@@ -31,17 +46,21 @@ public class PlayerController : MonoBehaviour {
 			glideMotion.Glide();
 		} else {
 			nonGlideMotion.Move();
+		} 
+
+		if(shouldJump) {
+			jumpMotion.Jump();
+			shouldJump = false;
 		}
 	}
 
-	private void InitiateGlide() {
+	private void ActivateGlide() {
 		rigidbody2D.gravityScale = 0;
 		gliding = true;
 	}
 
-	private void EndGlide() {
-		rigidbody2D.gravityScale = 5;
+	private void DeactivateGlide() {
+		rigidbody2D.gravityScale = defaultGravity;
 		gliding = false;
 	}
-
 }
