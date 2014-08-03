@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour {
 
 	private void ActivateGlide() {
 		DisableGravity();
+		DisableVerticalVelocity();
 		gliding = true;
 	}
 
@@ -70,7 +71,6 @@ public class PlayerController : MonoBehaviour {
 
 	private void ActivateCrouch() {
 		if(!crouching) {
-			Debug.Log("Activating crouch.");
 			crouching = true;
 			// Do all other crouch-related logic here
 		}
@@ -78,7 +78,6 @@ public class PlayerController : MonoBehaviour {
 
 	private void DeactivateCrouch() {
 		if(crouching) {
-				Debug.Log("Deactivating crouch.");
 			crouching = false;
 			// Do all other crouch-related logic here
 		}
@@ -118,7 +117,11 @@ public class PlayerController : MonoBehaviour {
 
 	private void HandleGlideInput() {
 		if(Input.GetButtonDown("A")) { // If player is not grounded, then the "A" button activates glide mode.
-			ActivateGlide();
+			if(!gliding) {
+				ActivateGlide();
+			} else {
+				DeactivateGlide();
+			}
 		}
 	}
 }
