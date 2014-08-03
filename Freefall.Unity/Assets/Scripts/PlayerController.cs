@@ -61,7 +61,6 @@ public class PlayerController : MonoBehaviour {
 
 	private void ActivateGlide() {
 		DisableGravity();
-		DisableVerticalVelocity();
 		gliding = true;
 	}
 
