@@ -14,6 +14,7 @@ GameObject:
   - 58: {fileID: 5800000}
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400006}
   m_Layer: 0
   m_Name: TestSprite
   m_TagString: Untagged
@@ -68,7 +69,7 @@ Rigidbody2D:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_Mass: 1
-  m_LinearDrag: 1
+  m_LinearDrag: 3
   m_AngularDrag: .0500000007
   m_GravityScale: 0
   m_FixedAngle: 1
@@ -98,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63c0c57facd64e940bc3b8f9066a5296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultGravity: 15
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -110,8 +112,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxNonGlideSpeed: 80
-  nonGlideAcceleration: 15
-  nonGlideDeceleration: 3
+  nonGlideAcceleration: 20
+  nonGlideDeceleration: 0
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -126,6 +128,18 @@ MonoBehaviour:
   maxGlideSpeed: 80
   glideAcceleration: 10
   glideDeceleration: 3
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaa8ee038d9eecc42aa36d5baf4dc0b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpVelocity: 100
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
