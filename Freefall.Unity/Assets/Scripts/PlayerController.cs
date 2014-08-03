@@ -4,12 +4,19 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 	public float defaultGravity = 40f;
 
+	// Detection of a ground tile within this distance of bottom left/corner/right of collider will cause 
+	// checkGrounded() to evaluate to true.
+	private float colliderToGroundDistance = .1f;
+
+	private int groundLayerIndex;
+
 	private bool gliding = true;
 	private bool grounded = false;
 	private bool jumping = false;
 	private bool crouching = false;
 	
 	private Transform groundCheck;
+	private BoxCollider2D boxCollider2D;
 
 	// Motion Controls
 	private GlideMotion glideMotion;
@@ -19,15 +26,18 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		groundCheck = transform.Find("groundCheck");
+		groundLayerIndex = LayerMask.NameToLayer("Ground");
 
 		glideMotion = transform.GetComponent<GlideMotion>();
 		nonGlideMotion = transform.GetComponent<NonGlideMotion>();
 		jumpMotion = transform.GetComponent<JumpMotion>();
+		boxCollider2D = transform.GetComponent<BoxCollider2D>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
+		grounded = checkGrounded();
+		
 		if(grounded) {
 			DisableGravity();
 			DisableVerticalVelocity();
@@ -57,6 +67,31 @@ public class PlayerController : MonoBehaviour {
 			jumpMotion.Jump();
 			jumping = false;
 		}
+	}
+
+	bool checkGrounded() {
+		float halfColliderWidth = (boxCollider2D.size.x * transform.localScale.x) / 2;
+		float halfColliderHeight = (boxCollider2D.size.y * transform.localScale.y) / 2;
+
+		// Transform the collider box's coordinates from local space to world space
+		Vector3 boxCenter3D = transform.TransformPoint(boxCollider2D.center);
+
+		Vector2 boxCenter = new Vector2(boxCenter3D.x, boxCenter3D.y);
+		Vector2 boxLeftEdge = new Vector2(boxCenter3D.x - halfColliderWidth, boxCenter3D.y);
+		Vector2 boxRightEdge = new Vector2(boxCenter3D.x + halfColliderWidth, boxCenter3D.y);
+		
+		Vector2 boxBottomCenter = new Vector2(boxCenter.x, boxCenter.y - halfColliderHeight);
+		Vector2 boxLowerLeftCorner = new Vector2(boxCenter.x - halfColliderWidth, boxCenter.y - halfColliderHeight);
+		Vector2 boxLowerRightCorner = new Vector2(boxCenter.x + halfColliderWidth, boxCenter.y - halfColliderHeight);
+
+		Vector2 centerVector = new Vector2(boxBottomCenter.x - boxCenter.x, boxBottomCenter.y - boxCenter.y);
+		Vector2 leftEdgeVector = new Vector2(boxLowerLeftCorner.x - boxLeftEdge.x, boxLowerLeftCorner.y - boxLeftEdge.y);
+		Vector2 rightEdgeVector = new Vector2(boxLowerRightCorner.x - boxRightEdge.x, boxRightEdge.y - transform.position.y);
+
+		// Draw a ray down the left edge, center, and right edge in order to detect ground.
+		return Physics2D.Raycast(boxCenter, centerVector, centerVector.magnitude + colliderToGroundDistance, 1 << groundLayerIndex)
+			|| Physics2D.Raycast(boxLeftEdge, leftEdgeVector, leftEdgeVector.magnitude + colliderToGroundDistance, 1 << groundLayerIndex)
+			|| Physics2D.Raycast(boxRightEdge, rightEdgeVector, rightEdgeVector.magnitude + colliderToGroundDistance, 1 << groundLayerIndex);
 	}
 
 	private void ActivateGlide() {
