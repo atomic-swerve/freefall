@@ -11,7 +11,7 @@ public class PauseController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if (Input.GetKeyDown("space")) 
+	    if (Input.GetButtonDown("Start")) 
         {
             isPaused = !isPaused;
             pauseGame(isPaused);
