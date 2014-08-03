@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour {
 
 		Vector2 centerVector = new Vector2(boxBottomCenter.x - boxCenter.x, boxBottomCenter.y - boxCenter.y);
 		Vector2 leftEdgeVector = new Vector2(boxLowerLeftCorner.x - boxLeftEdge.x, boxLowerLeftCorner.y - boxLeftEdge.y);
-		Vector2 rightEdgeVector = new Vector2(boxLowerRightCorner.x - boxRightEdge.x, boxRightEdge.y - transform.position.y);
+		Vector2 rightEdgeVector = new Vector2(boxLowerRightCorner.x - boxRightEdge.x, boxLowerRightCorner.y - boxRightEdge.y);
 
 		// Draw a ray down the left edge, center, and right edge in order to detect ground.
 		return Physics2D.Raycast(boxCenter, centerVector, centerVector.magnitude + colliderToGroundDistance, 1 << groundLayerIndex)
