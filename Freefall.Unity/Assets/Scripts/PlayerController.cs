@@ -64,7 +64,9 @@ public class PlayerController : MonoBehaviour {
 		gliding = true;
 	}
 
-	private void DeactivateGlide() {
+	// DeactivateGlide is public because external events such as attacks or environment changes can force the
+	// player out of glide mode.
+	public void DeactivateGlide() {
 		gliding = false;
 	}
 
