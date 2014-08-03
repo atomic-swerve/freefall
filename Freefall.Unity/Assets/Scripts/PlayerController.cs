@@ -30,32 +30,18 @@ public class PlayerController : MonoBehaviour {
 		grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
 		if(grounded) {
 			DisableGravity();
-			if(gliding) {
-				DeactivateGlide();
-			}
-			if(Input.GetButtonDown("A")) {
-				jumping = true;
-			}
-			if(Input.GetAxis("Y-Axis") < 0) {
-				if(!crouching) {
-					ActivateCrouch();
-				}
-			} else {
-				if(crouching) {
-					DeactivateCrouch();
-				}
-			}
-			if(Input.GetAxis("X-Axis") != 0) {
-				DeactivateCrouch();
-			}
+			DisableVerticalVelocity();
+			DeactivateGlide();
+
+			HandleJumpInput();
+			HandleCrouchInput();
 		} else {
+			// Enable gravity for free fall.
 			if(!gliding) {
-				EnableGravity(); // If not grounded and not gliding, then the player is in free fall.
+				EnableGravity();
 			}
 
-			if(Input.GetButtonDown("A")) { // If player is not grounded, then the "A" button activates glide mode.
-				ActivateGlide();
-			}
+			HandleGlideInput();
 		}
 	}
 
@@ -83,15 +69,19 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void ActivateCrouch() {
-		Debug.Log("Activating crouch.");
-		crouching = true;
-		// Do all other crouch-related logic here
+		if(!crouching) {
+			Debug.Log("Activating crouch.");
+			crouching = true;
+			// Do all other crouch-related logic here
+		}
 	}
 
 	private void DeactivateCrouch() {
-		Debug.Log("Deactivating crouch.");
-		crouching = false;
-		// Do all other crouch-related logic here
+		if(crouching) {
+				Debug.Log("Deactivating crouch.");
+			crouching = false;
+			// Do all other crouch-related logic here
+		}
 	}
 
 	private void EnableGravity() {
@@ -100,5 +90,35 @@ public class PlayerController : MonoBehaviour {
 
 	private void DisableGravity() {
 		rigidbody2D.gravityScale = 0;
+	}
+
+	private void DisableVerticalVelocity() {
+		Vector2 newVelocity = new Vector2(rigidbody2D.velocity.x, 0);
+		rigidbody2D.velocity = newVelocity;
+	}
+
+	private void HandleJumpInput() {
+		if(Input.GetButtonDown("A")) {
+				jumping = true;
+		}
+	}
+
+	private void HandleCrouchInput() {
+		if(Input.GetAxis("Y-Axis") < 0) {
+			if(!crouching) {
+				ActivateCrouch();
+			}
+		} else {
+			DeactivateCrouch();
+		}
+		if(Input.GetAxis("X-Axis") != 0 && crouching) {
+			DeactivateCrouch();
+		}
+	}
+
+	private void HandleGlideInput() {
+		if(Input.GetButtonDown("A")) { // If player is not grounded, then the "A" button activates glide mode.
+			ActivateGlide();
+		}
 	}
 }
