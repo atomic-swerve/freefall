@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-	public float defaultGravity = 15f;
+	public float defaultGravity = 40f;
 
 	private bool gliding = true;
 	private bool grounded = false;
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
 		if(grounded) {
+			DisableGravity();
 			if(gliding) {
 				DeactivateGlide();
 			}
@@ -48,13 +49,17 @@ public class PlayerController : MonoBehaviour {
 				DeactivateCrouch();
 			}
 		} else {
+			if(!gliding) {
+				EnableGravity(); // If not grounded and not gliding, then the player is in free fall.
+			}
+
 			if(Input.GetButtonDown("A")) { // If player is not grounded, then the "A" button activates glide mode.
 				ActivateGlide();
 			}
 		}
 	}
 
-	void FixedUpdate() {
+	void FixedUpdate() {	
 		if(gliding) {
 			glideMotion.Glide();
 		} else {
@@ -62,30 +67,38 @@ public class PlayerController : MonoBehaviour {
 		} 
 
 		if(jumping) {
+			EnableGravity();
 			jumpMotion.Jump();
 			jumping = false;
 		}
 	}
 
 	private void ActivateGlide() {
-		rigidbody2D.gravityScale = 0;
+		DisableGravity();
 		gliding = true;
 	}
 
 	private void DeactivateGlide() {
-		rigidbody2D.gravityScale = defaultGravity;
 		gliding = false;
 	}
 
-	public void ActivateCrouch() {
+	private void ActivateCrouch() {
 		Debug.Log("Activating crouch.");
 		crouching = true;
 		// Do all other crouch-related logic here
 	}
 
-	public void DeactivateCrouch() {
+	private void DeactivateCrouch() {
 		Debug.Log("Deactivating crouch.");
 		crouching = false;
 		// Do all other crouch-related logic here
+	}
+
+	private void EnableGravity() {
+		rigidbody2D.gravityScale = defaultGravity;
+	}
+
+	private void DisableGravity() {
+		rigidbody2D.gravityScale = 0;
 	}
 }

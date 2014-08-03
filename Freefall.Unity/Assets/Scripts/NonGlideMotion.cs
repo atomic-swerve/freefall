@@ -3,7 +3,7 @@ using System.Collections;
 
 public class NonGlideMotion : MonoBehaviour {
 	public float maxNonGlideSpeed = 80f; // "NonGlide" motion is all non-gliding movement (so while either grounded or in free fall).
-	public float nonGlideAcceleration = 15f;
+	public float nonGlideAcceleration = 20f;
 	public float nonGlideDeceleration = 3f;
 
 	public void Move() {
