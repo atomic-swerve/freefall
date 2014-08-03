@@ -3,6 +3,8 @@ using System.Collections;
 
 public abstract class PlayerInteraction : MonoBehaviour
 {
+		public bool ShouldShowIndicator;
+		
 		protected enum InteractionState
 		{
 				Pending,
@@ -11,8 +13,8 @@ public abstract class PlayerInteraction : MonoBehaviour
 		}
 	
 		/*
-		 * Override this with the behaviour to perform.
-	 	 * Use 'yield' to finish behaviour processing for the current frame.
+		 * Override this with the behaviour to perform as the equivalent
+		 * to an 'Update' frame on the interactable object.
 	 	 *
 	 	 * - Returning 'Pending' will stop interaction processing and
 	 	 *   allow the player to restart the interaction.
@@ -42,7 +44,7 @@ public abstract class PlayerInteraction : MonoBehaviour
 						Destroy (this);
 				}
 
-				SpriteRenderer.enabled = IsStatePending;
+			SpriteRenderer.enabled = ShouldShowIndicator && IsStatePending;
 		}
 
 		void OnCollisionEnter2D (Collision2D collision)
