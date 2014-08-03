@@ -3,7 +3,7 @@ using System.Collections;
 
 public class HealthCollectableController : MonoBehaviour {
 
-    public int healthRecoverValue = 1;
+    public static int HEALTH_RECOVER_VALUE = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -17,7 +17,7 @@ public class HealthCollectableController : MonoBehaviour {
 
     public int Heal(int currentHealth, int maxHealth)
     {
-        int totalHealth = currentHealth + healthRecoverValue;
+        int totalHealth = currentHealth + HEALTH_RECOVER_VALUE;
         Destroy(gameObject);
 
         if (totalHealth > maxHealth)

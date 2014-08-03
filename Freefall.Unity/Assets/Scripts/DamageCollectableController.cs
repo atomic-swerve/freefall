@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DamageCollectableController : MonoBehaviour {
 
-    public int damageUpValue = 1;
+    public static int DAMAGE_UP_VALUE = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -19,6 +19,6 @@ public class DamageCollectableController : MonoBehaviour {
     {
         Destroy(gameObject);
 
-        return currentDamageValue + damageUpValue;
+        return currentDamageValue + DAMAGE_UP_VALUE;
     }
 }
