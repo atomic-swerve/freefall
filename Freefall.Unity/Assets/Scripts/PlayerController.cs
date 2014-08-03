@@ -3,6 +3,9 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
+    public int totalHealth = 10;
+    public int maxHealth = 10;
+
 	public float maxGlideSpeed = 15f;
 	public float glideAcceleration = 1.2f;
 	public float glideDeceleration = .6f;
@@ -85,4 +88,15 @@ public class PlayerController : MonoBehaviour {
 
 		rigidbody2D.velocity = movement;
 	}
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        HealthCollectableController healthCollectable = collision.gameObject.GetComponent<HealthCollectableController>();
+
+        if (healthCollectable != null)
+        {
+            this.totalHealth = healthCollectable.Heal(totalHealth, maxHealth);
+            print("Player total health: " + this.totalHealth);
+        }
+    }
 }
