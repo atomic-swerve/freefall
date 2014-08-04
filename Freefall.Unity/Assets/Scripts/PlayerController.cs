@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	bool checkGrounded() {
+	private bool checkGrounded() {
 		float halfColliderWidth = (boxCollider2D.size.x * transform.localScale.x) / 2;
 		float halfColliderHeight = (boxCollider2D.size.y * transform.localScale.y) / 2;
 
