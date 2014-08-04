@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour {
 	private bool jumping = false;
 	private bool crouching = false;
 	
-	private Transform groundCheck;
 	private BoxCollider2D boxCollider2D;
 
 	// Motion Controls
@@ -25,7 +24,6 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		groundCheck = transform.Find("groundCheck");
 		groundLayerIndex = LayerMask.NameToLayer("Ground");
 
 		glideMotion = transform.GetComponent<GlideMotion>();
