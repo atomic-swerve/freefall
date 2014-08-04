@@ -6,6 +6,31 @@ public class GlideMotion : MonoBehaviour {
 	public float glideAcceleration = 10f;
 	public float glideDeceleration = 3f;
 
+	private PlayerController player;
+
+	void Awake () {
+		player = GetComponent<PlayerController>();
+	}
+
+	public void HandleGlideInput() {
+		if(Input.GetButtonDown("A")) { // If player is not grounded, then the "A" button activates glide mode.
+			if(!player.Gliding) {
+				ActivateGlide();
+			} else {
+				DeactivateGlide();
+			}
+		}
+	}
+
+	public void ActivateGlide() {
+		player.DisableGravity();
+		player.Gliding = true;
+	}
+
+	public void DeactivateGlide() {
+		player.Gliding = false;
+	}
+
 	public void Glide() {
 		Vector2 movement = rigidbody2D.velocity;
 
