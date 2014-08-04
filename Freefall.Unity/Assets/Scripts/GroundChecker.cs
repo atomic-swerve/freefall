@@ -4,7 +4,7 @@ using System.Collections;
 public class GroundChecker : MonoBehaviour {
 	// Detection of a ground tile within this distance of bottom left/corner/right of collider will cause 
 	// checkGrounded() to evaluate to true.
-	private float colliderToGroundDistance = .1f;
+	public float colliderToGroundDistance = .2f;
 
 	private int groundLayerIndex;
 
