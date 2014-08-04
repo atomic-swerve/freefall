@@ -5,6 +5,11 @@ public class PlayerAttackInteraction : PlayerInteraction {
 
     PlayerController player;
 
+    Vector2 UP_DIRECTION = new Vector2(0, 1);
+    Vector2 DOWN_DIRECTION = new Vector2(0, -1);
+    Vector2 RIGHT_DIRECTION = new Vector2(1, 0);
+    Vector2 LEFT_DIRECTION = new Vector2(-1, 0);
+
 	// Use this for initialization
 	void Start () {
 	    player = this.GetComponent<PlayerController>();
@@ -12,53 +17,60 @@ public class PlayerAttackInteraction : PlayerInteraction {
 	
 	// Update is called once per frame
 	void Update () {
-        Attack();
+        PerformAttack();
 	}
 
     override protected InteractionState PerformInteraction()
     {
-        Attack();
+        PerformAttack();
         return InteractionState.Complete;
     }
 
-    void Attack()
+    void PerformAttack()
     {
         Vector2 attackBox = new Vector2(1,1);
+        
+        float attackDistance = 1.0f;
 
-        Vector2 rightDirection = new Vector2(1,0);
-        Vector2 leftDirection = new Vector2(-1,0);
+        if (Input.GetButtonDown("Attack") && Input.GetAxis("Y-Axis") > 0)
+        {
+            Attack(player.transform.position, attackBox, UP_DIRECTION, attackDistance);
+        }
+        if (Input.GetButtonDown("Attack") && Input.GetAxis("X-Axis") < 0)
+        {
+            Attack(player.transform.position, attackBox, LEFT_DIRECTION, attackDistance);
+        }
+        if (Input.GetButtonDown("Attack") && Input.GetAxis("X-Axis") > 0)
+        {
+            Attack(player.transform.position, attackBox, RIGHT_DIRECTION, attackDistance);
+        }
+        if (Input.GetButtonDown("Attack") && Input.GetAxis("Y-Axis") < 0)
+        {
+            if (player.jumping || player.gliding)
+                Attack(player.transform.position, attackBox, DOWN_DIRECTION, attackDistance);
+        }
+        if (Input.GetButtonDown("Attack"))
+        {
+            Attack(player.transform.position, attackBox, player.facingVector, attackDistance);
+        }
+    }
 
-        if (Input.GetButtonDown("Attack") && (Input.GetAxis("X-Axis") > 0))
+    void Attack(Vector2 position, Vector2 attackBoxSize, Vector2 attackDirection, float attackDistance)
+    {
+        RaycastHit2D[] hitObjects = Physics2D.BoxCastAll(position, attackBoxSize, 0, attackDirection, attackDistance);
+        if (hitObjects.Length == 0)
+            print("Nothing hit");
+        else
         {
-            RaycastHit2D[] hitObjects = Physics2D.BoxCastAll(this.transform.position, attackBox, 0, rightDirection, 1);
-            if (hitObjects.Length == 0)
-                print("Nothing hit");
-            else
+            // Put attack logic in here
+            string text = "Items Hit";
+            for (int i = 0; i < hitObjects.Length; i++)
             {
-                string text = "Hit Right ";
-                for (int i = 0; i < hitObjects.Length; i++)
-                {
-                    text += "(" + hitObjects[i].transform.position + "), ";
-                    Destroy(hitObjects[i].collider.gameObject);
-                }
-                print(text);
+                text += "(" + hitObjects[i].transform.position + "), ";
+                Destroy(hitObjects[i].collider.gameObject);
             }
+            print(text);
         }
-        else if (Input.GetButtonDown("Attack") && (Input.GetAxis("X-Axis") < 0))
-        {
-            RaycastHit2D[] hitObjects = Physics2D.BoxCastAll(this.transform.position, attackBox, 0, leftDirection, 1);
-            if (hitObjects.Length == 0)
-                print("Nothing hit");
-            else 
-            {
-                string text = "Hit Left ";
-                for (int i = 0; i < hitObjects.Length; i++)
-                {
-                    text += "(" + hitObjects[i].transform.position + "), ";
-                    Destroy(hitObjects[i].collider.gameObject);
-                }
-                print(text);
-            }
-        }
+        print(attackDirection.ToString());
     }
 }

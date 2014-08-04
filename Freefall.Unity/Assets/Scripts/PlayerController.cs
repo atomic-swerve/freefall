@@ -10,10 +10,12 @@ public class PlayerController : MonoBehaviour {
 
 	private int groundLayerIndex;
 
-	private bool gliding = true;
-	private bool grounded = false;
-	private bool jumping = false;
-	private bool crouching = false;
+	public bool gliding = true;
+    public bool grounded = false;
+    public bool jumping = false;
+    public bool crouching = false;
+
+    public Vector2 facingVector;
 	
 	private Transform groundCheck;
 	private BoxCollider2D boxCollider2D;
@@ -32,6 +34,8 @@ public class PlayerController : MonoBehaviour {
 		nonGlideMotion = transform.GetComponent<NonGlideMotion>();
 		jumpMotion = transform.GetComponent<JumpMotion>();
 		boxCollider2D = transform.GetComponent<BoxCollider2D>();
+
+        facingVector = new Vector2(1, 0);
 	}
 	
 	// Update is called once per frame
