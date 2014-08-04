@@ -7,9 +7,11 @@ public class GlideMotion : MonoBehaviour {
 	public float glideDeceleration = 3f;
 
 	private PlayerController player;
+	private PlayerGravity playerGravity;
 
 	void Awake () {
 		player = GetComponent<PlayerController>();
+		playerGravity = GetComponent<PlayerGravity>();
 	}
 
 	public void HandleGlideInput() {
@@ -23,7 +25,7 @@ public class GlideMotion : MonoBehaviour {
 	}
 
 	public void ActivateGlide() {
-		player.DisableGravity();
+		playerGravity.DisableGravity();
 		player.Gliding = true;
 	}
 
