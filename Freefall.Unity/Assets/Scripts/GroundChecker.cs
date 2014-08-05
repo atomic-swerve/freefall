@@ -6,16 +6,13 @@ public class GroundChecker : MonoBehaviour {
 	// checkGrounded() to evaluate to true.
 	public float colliderToGroundDistance = .2f;
 
-	private int groundLayerIndex;
-
 	private BoxCollider2D boxCollider2D;
 
 	void Awake() {
 		boxCollider2D = GetComponent<BoxCollider2D>();
-		groundLayerIndex = LayerMask.NameToLayer("Ground");
 	}
 
-	public bool checkGrounded() {
+	public bool CheckGrounded(int groundLayerIndex) {
 		float halfColliderWidth = (boxCollider2D.size.x * transform.localScale.x) / 2;
 		float halfColliderHeight = (boxCollider2D.size.y * transform.localScale.y) / 2;
 

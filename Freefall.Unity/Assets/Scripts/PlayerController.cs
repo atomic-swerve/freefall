@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour {
 	private NonGlideMotion nonGlideMotion;
 	private JumpMotion jumpMotion;
 	private CrouchMotion crouchMotion;
+	private DropThrough dropThrough;
 
 	// Non-Motion State Control Components
 	private GroundChecker groundChecker;
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour {
 	public bool Jumping { get; set; }
 	public bool Grounded { get; set; }
 	public bool Crouching { get; set; }
+	public bool DroppingThroughPlatform { get; set; }
 
 	// Use this for initialization
 	void Awake () {
@@ -25,6 +27,7 @@ public class PlayerController : MonoBehaviour {
 		nonGlideMotion = GetComponent<NonGlideMotion>();
 		jumpMotion = GetComponent<JumpMotion>();
 		crouchMotion = GetComponent<CrouchMotion>();
+		dropThrough = GetComponent<DropThrough>();
 
 		groundChecker = GetComponent<GroundChecker>();
 		playerGravity = GetComponent<PlayerGravity>();
@@ -36,15 +39,18 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Grounded = groundChecker.checkGrounded();
+		Grounded = groundChecker.CheckGrounded(LayerMask.NameToLayer("Ground")) || groundChecker.CheckGrounded(LayerMask.NameToLayer("Dropthrough Ground"));
 		
 		if(Grounded) {
-			playerGravity.DisableGravity();
-			this.DisableVerticalVelocity();
-			glideMotion.DeactivateGlide();
+			dropThrough.HandleDropInput();
+			if(!DroppingThroughPlatform) {
+				playerGravity.DisableGravity();
+				this.DisableVerticalVelocity();
+				glideMotion.DeactivateGlide();
 
-			jumpMotion.HandleJumpInput();
-			crouchMotion.HandleCrouchInput();
+				jumpMotion.HandleJumpInput();
+				crouchMotion.HandleCrouchInput();				
+			}
 		} else {
 			// Enable gravity for free fall.
 			if(!Gliding) {
@@ -52,7 +58,9 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			// Handle all possible airborne player actions
-			glideMotion.HandleGlideInput();
+			if(!DroppingThroughPlatform) {
+				glideMotion.HandleGlideInput();
+			}
 		}
 	}
 
