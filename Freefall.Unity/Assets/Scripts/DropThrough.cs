@@ -7,41 +7,54 @@ public class DropThrough : MonoBehaviour {
 
 	private PlayerController player;
 	private PlayerGravity gravity;
-	private BoxCollider2D boxCollider2D;
-	private CircleCollider2D circleCollider2D;
 	private GroundChecker groundChecker;
 
 	void Awake () {
 		player = GetComponent<PlayerController>();	
 		gravity = GetComponent<PlayerGravity>();
-		boxCollider2D = GetComponent<BoxCollider2D>();
-		circleCollider2D = GetComponent<CircleCollider2D>();
 		groundChecker = GetComponent<GroundChecker>();
 	}
 
 	public void ActivateDrop() {
 		player.DroppingThroughPlatform = true;
-		boxCollider2D.isTrigger = true;
-		circleCollider2D.isTrigger = true;
 		gravity.EnableGravity();
 	}
 
 	public void DeactivateDrop() {
 		player.DroppingThroughPlatform = false;
-		boxCollider2D.isTrigger = false;
-		circleCollider2D.isTrigger = false;
 	}
 	
 	public void HandleDropInput() {
 		if(Input.GetAxis("Y-Axis") < 0 && Input.GetButtonDown("A") && groundChecker.CheckGrounded(LayerMask.NameToLayer("Dropthrough Ground"))) {
-			print("dropping.");
 			StartCoroutine("DropThroughPlatform");
 		}
 	}
 
 	private IEnumerator DropThroughPlatform() {
+		RaycastHit2D[] hits = groundChecker.GetHits(LayerMask.NameToLayer("Dropthrough Ground"));
+
+		DisableRigidbodies(hits);
 		ActivateDrop();
+
 		yield return new WaitForSeconds(dropThroughDuration);
+		
 		DeactivateDrop();
+		EnableRigidbodies(hits);
+	}
+
+	private void DisableRigidbodies(RaycastHit2D[] hits) {
+		foreach (RaycastHit2D hit in hits) {
+			if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Dropthrough Ground")) {
+				hit.collider.isTrigger = true;
+			}
+		}		
+	}
+
+	private void EnableRigidbodies(RaycastHit2D[] hits) {
+		foreach (RaycastHit2D hit in hits) {
+			if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Dropthrough Ground")) {
+				hit.collider.isTrigger = false;
+			}
+		}		
 	}
 }

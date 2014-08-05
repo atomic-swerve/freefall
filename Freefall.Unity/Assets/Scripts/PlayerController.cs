@@ -39,7 +39,8 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Grounded = groundChecker.CheckGrounded(LayerMask.NameToLayer("Ground")) || groundChecker.CheckGrounded(LayerMask.NameToLayer("Dropthrough Ground"));
+		Grounded = groundChecker.CheckGrounded(LayerMask.NameToLayer("Ground")) || 
+		(!DroppingThroughPlatform && groundChecker.CheckGrounded(LayerMask.NameToLayer("Dropthrough Ground")));
 		
 		if(Grounded) {
 			dropThrough.HandleDropInput();
