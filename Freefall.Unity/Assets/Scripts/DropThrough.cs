@@ -8,11 +8,13 @@ public class DropThrough : MonoBehaviour {
 	private PlayerController player;
 	private PlayerGravity gravity;
 	private GroundChecker groundChecker;
+	private BoxCollider2D boxCollider2D;
 
 	void Awake () {
 		player = GetComponent<PlayerController>();	
 		gravity = GetComponent<PlayerGravity>();
 		groundChecker = GetComponent<GroundChecker>();
+		boxCollider2D = GetComponent<BoxCollider2D>();
 	}
 
 	public void ActivateDrop() {
@@ -33,11 +35,17 @@ public class DropThrough : MonoBehaviour {
 	private IEnumerator DropThroughPlatform() {
 		RaycastHit2D[] hits = groundChecker.GetHits(LayerMask.NameToLayer("Dropthrough Ground"));
 
+		float boxColliderOriginalSizeX = boxCollider2D.size.x;
+
+		// Shrink boxCollider2D to avoid collision with adjacent non-dropthrough tile.
+		boxCollider2D.size = new Vector2(boxCollider2D.size.x * .99f, boxCollider2D.size.y);
 		DisableRigidbodies(hits);
 		ActivateDrop();
 
 		yield return new WaitForSeconds(dropThroughDuration);
 		
+		// Restore boxCollider2D size
+		boxCollider2D.size = new Vector2(boxColliderOriginalSizeX, boxCollider2D.size.y);
 		DeactivateDrop();
 		EnableRigidbodies(hits);
 	}
