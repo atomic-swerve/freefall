@@ -62,13 +62,14 @@
 			{
 				half4 tc = tex2D(_MainTex, IN.texcoord);
 				
-				float uv_p_x = tc.r < .25 ? 0.51 : (tc.r < .5 ? 0.1 : (tc.r < .75 ? 0.51 : 0.1));
+				float uv_p_x = tc.r < .25 ? 0.1 : (tc.r < .5 ? 0.51 : (tc.r < .75 ? 0.1 : 0.51));
 				float uv_p_y = tc.r < .25 ? 0.51 : (tc.r < .5 ? 0.51 : (tc.r < .75 ? 0.1 : 0.1));
 				float2 uv_p = float2(uv_p_x, uv_p_y);
 				half4 pc = tex2D(_PaletteTex, uv_p);
 				
 				//return fixed4(uv_p_x, uv_p_x, uv_p_x, tc.a);
 				//return fixed4(uv_p_y, uv_p_y, uv_p_y, tc.a);
+				//return fixed4(tc.r, tc.g, tc.b, tc.a);
 				return fixed4(pc.r, pc.g, pc.b, tc.a);
 			}
 			ENDCG
