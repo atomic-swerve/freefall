@@ -41,7 +41,7 @@ public class DropThrough : MonoBehaviour {
 		boxCollider2D.size = new Vector2(boxCollider2D.size.x * .99f, boxCollider2D.size.y);
 		gravity.EnableGravity();
 
-		RaycastHit2D[] hits = groundChecker.GetHits(LayerMask.NameToLayer("Dropthrough Ground"));
+		RaycastHit2D[] hits = groundChecker.GetHits(LayerMask.NameToLayer("DropThrough Ground"));
 
 		// Ignore tiles
 		foreach (RaycastHit2D hit in hits) {
@@ -65,7 +65,7 @@ public class DropThrough : MonoBehaviour {
 	}
 	
 	public void HandleDropInput() {
-		if(Input.GetAxis("Y-Axis") < 0 && Input.GetButtonDown("A") && groundChecker.CheckGrounded(LayerMask.NameToLayer("Dropthrough Ground"))) {
+		if(Input.GetAxis("Y-Axis") < 0 && Input.GetButtonDown("A") && groundChecker.CheckGrounded(LayerMask.NameToLayer("DropThrough Ground"))) {
 			ActivateDrop();
 		}
 	}
