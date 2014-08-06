@@ -6,6 +6,8 @@ public class DropThrough : MonoBehaviour {
 	// Length of time that the dropping-through state lasts
 	public float dropThroughDuration = .3f;
 
+	public float dropThroughTileHeight = 8f;
+
 	private PlayerController player;
 	private PlayerGravity gravity;
 	private GroundChecker groundChecker;
@@ -15,6 +17,8 @@ public class DropThrough : MonoBehaviour {
 	private float originalBoxCollider2DSizeX;
 
 	private List<Collider2D> ignoredTiles;
+
+	private float positionAtDropStartY;
 
 	void Awake() {
 		player = GetComponent<PlayerController>();	
@@ -31,6 +35,8 @@ public class DropThrough : MonoBehaviour {
 
 
 	public void ActivateDrop() {
+		positionAtDropStartY = transform.position.y;
+
 		player.DroppingThroughPlatform = true;
 		boxCollider2D.size = new Vector2(boxCollider2D.size.x * .99f, boxCollider2D.size.y);
 		gravity.EnableGravity();
@@ -62,5 +68,9 @@ public class DropThrough : MonoBehaviour {
 		if(Input.GetAxis("Y-Axis") < 0 && Input.GetButtonDown("A") && groundChecker.CheckGrounded(LayerMask.NameToLayer("Dropthrough Ground"))) {
 			ActivateDrop();
 		}
+	}
+
+	public bool TileCleared() {
+		return transform.position.y < positionAtDropStartY - (dropThroughTileHeight + (boxCollider2D.size.y * transform.localScale.y));
 	}
 }

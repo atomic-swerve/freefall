@@ -42,11 +42,11 @@ public class PlayerController : MonoBehaviour {
 		Grounded = groundChecker.CheckGrounded(LayerMask.NameToLayer("Ground")) || 
 		(!DroppingThroughPlatform && groundChecker.CheckGrounded(LayerMask.NameToLayer("Dropthrough Ground")));
 		
-		if(Grounded) {
-			if(DroppingThroughPlatform) {
-				dropThrough.DeactivateDrop();
-			}
+		if(DroppingThroughPlatform && dropThrough.TileCleared()) {
+			dropThrough.DeactivateDrop();
+		}
 
+		if(Grounded) {
 			dropThrough.HandleDropInput();
 
 			if(!DroppingThroughPlatform) {
