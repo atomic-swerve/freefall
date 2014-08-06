@@ -43,7 +43,12 @@ public class PlayerController : MonoBehaviour {
 		(!DroppingThroughPlatform && groundChecker.CheckGrounded(LayerMask.NameToLayer("Dropthrough Ground")));
 		
 		if(Grounded) {
+			if(DroppingThroughPlatform) {
+				dropThrough.DeactivateDrop();
+			}
+
 			dropThrough.HandleDropInput();
+
 			if(!DroppingThroughPlatform) {
 				playerGravity.DisableGravity();
 				this.DisableVerticalVelocity();
