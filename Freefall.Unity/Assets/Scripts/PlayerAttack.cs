@@ -22,41 +22,48 @@ public class PlayerAttack : MonoBehaviour {
 
     void PerformAttack()
     {
-        Vector2 attackBox = new Vector2(1,1);
+        Vector2 attackBox = new Vector2(7.5f, 7.5f);
+        Vector2 attackPosition = new Vector2(player.transform.position.x, player.transform.position.y);
         
-        float attackDistance = 1.0f;
+        float attackDistance = 5.0f;
 
-        if (Input.GetButtonDown("Attack") && Input.GetAxis("Y-Axis") > 0)
+        if (Input.GetButtonDown("B") && Input.GetAxis("Y-Axis") > 0)
         {
-            Attack(player.transform.position, attackBox, UP_DIRECTION, attackDistance);
+            Attack(attackPosition, attackBox, UP_DIRECTION, attackDistance);
         }
-        if (Input.GetButtonDown("Attack") && Input.GetAxis("X-Axis") < 0)
+        if (Input.GetButtonDown("B") && Input.GetAxis("X-Axis") < 0)
         {
-            Attack(player.transform.position, attackBox, LEFT_DIRECTION, attackDistance);
+            Attack(attackPosition, attackBox, LEFT_DIRECTION, attackDistance);
         }
-        if (Input.GetButtonDown("Attack") && Input.GetAxis("X-Axis") > 0)
+        if (Input.GetButtonDown("B") && Input.GetAxis("X-Axis") > 0)
         {
-            Attack(player.transform.position, attackBox, RIGHT_DIRECTION, attackDistance);
+            Attack(attackPosition, attackBox, RIGHT_DIRECTION, attackDistance);
         }
-        if (Input.GetButtonDown("Attack") && Input.GetAxis("Y-Axis") < 0)
+        if (Input.GetButtonDown("B") && Input.GetAxis("Y-Axis") < 0)
         {
-            if (player.jumping || player.gliding)
-                Attack(player.transform.position, attackBox, DOWN_DIRECTION, attackDistance);
+            if (player.Jumping || player.Gliding) 
+                Attack(attackPosition, attackBox, DOWN_DIRECTION, attackDistance);
         }
-        if (Input.GetButtonDown("Attack"))
+        if (Input.GetButtonDown("B"))
         {
-            Attack(player.transform.position, attackBox, player.facingVector, attackDistance);
+            Attack(attackPosition, attackBox, player.facingVector, attackDistance);
         }
     }
 
     void Attack(Vector2 position, Vector2 attackBoxSize, Vector2 attackDirection, float attackDistance)
     {
-        RaycastHit2D[] hitObjects = Physics2D.BoxCastAll(position, attackBoxSize, 0, attackDirection, attackDistance);
+        RaycastHit2D[] hitObjectsRaycast = Physics2D.BoxCastAll(position, attackBoxSize, 0, attackDirection, attackDistance);
 
-        for (int i = 0; i < hitObjects.Length; i++)
+        for (int i = 0; i < hitObjectsRaycast.Length; i++)
         {
-            GameObject enemy = hitObjects[i].collider.gameObject;
-            PlayerAttackInteraction attackInteraction = enemy.GetComponent<PlayerAttackInteraction>();
+            GameObject hitObject = hitObjectsRaycast[i].collider.gameObject;
+            HealthComponent objectHealth = hitObject.GetComponent<HealthComponent>();
+
+            if (objectHealth.isEnemy)
+            {
+                print("Enemy damaged");
+                objectHealth.Damage();
+            }
         }
     }
 }

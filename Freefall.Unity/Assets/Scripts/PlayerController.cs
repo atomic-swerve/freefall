@@ -3,7 +3,8 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
-    public Vector2 facingVector;
+    public Vector2 facingVector = new Vector2(1, 0);
+
 	// Motion Controls
 	private GlideMotion glideMotion;
 	private NonGlideMotion nonGlideMotion;
@@ -32,8 +33,6 @@ public class PlayerController : MonoBehaviour {
 		playerGravity = GetComponent<PlayerGravity>();
 	}
 
-
-        facingVector = new Vector2(1, 0);
 	void Start() {
 		Gliding = true; // Start with glide enabled for testing.
 	}
