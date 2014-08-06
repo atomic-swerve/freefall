@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class DropThrough : MonoBehaviour {
-	// Length of time that the dropping-through state lasts
-	public float dropThroughDuration = .3f;
-
+	// Height of a dropThrough tile
 	public float dropThroughTileHeight = 8f;
 
 	private PlayerController player;
@@ -16,8 +14,10 @@ public class DropThrough : MonoBehaviour {
 
 	private float originalBoxCollider2DSizeX;
 
+	// List of tiles that are being ignored during a drop (ignored so that they can be passed through).
 	private List<Collider2D> ignoredTiles;
 
+	// Position at the beginning of a drop.
 	private float positionAtDropStartY;
 
 	void Awake() {
