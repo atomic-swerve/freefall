@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
 	private JumpMotion jumpMotion;
 	private CrouchMotion crouchMotion;
 	private DropThrough dropThrough;
+	private RiseThrough riseThrough;
 
 	// Non-Motion State Control Components
 	private GroundChecker groundChecker;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour {
 		jumpMotion = GetComponent<JumpMotion>();
 		crouchMotion = GetComponent<CrouchMotion>();
 		dropThrough = GetComponent<DropThrough>();
+		riseThrough = GetComponent<RiseThrough>();
 
 		groundChecker = GetComponent<GroundChecker>();
 		playerGravity = GetComponent<PlayerGravity>();
@@ -39,7 +41,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		groundChecker.HandleRiseThroughPlatforms();
+		riseThrough.HandleRiseThroughPlatforms();
 
 		Grounded = groundChecker.CheckGrounded(LayerMask.NameToLayer("Ground")) || groundChecker.CheckGrounded(LayerMask.NameToLayer("RiseThrough Ground")) ||
 		(!DroppingThroughPlatform && groundChecker.CheckGrounded(LayerMask.NameToLayer("DropThrough Ground")));
@@ -86,7 +88,10 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	// Stop player's descent.
 	public void DisableVerticalVelocity() {
-		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
+		if(rigidbody2D.velocity.y < 0) {
+			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);			
+		}
 	}
 }
