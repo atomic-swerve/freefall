@@ -39,6 +39,8 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		groundChecker.HandleRiseThroughPlatforms();
+
 		Grounded = groundChecker.CheckGrounded(LayerMask.NameToLayer("Ground")) || groundChecker.CheckGrounded(LayerMask.NameToLayer("RiseThrough Ground")) ||
 		(!DroppingThroughPlatform && groundChecker.CheckGrounded(LayerMask.NameToLayer("DropThrough Ground")));
 		
@@ -47,7 +49,6 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(Grounded) {
-			print("Grounded");
 			dropThrough.HandleDropInput();
 
 			if(!DroppingThroughPlatform) {
@@ -85,7 +86,7 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	private void DisableVerticalVelocity() {
+	public void DisableVerticalVelocity() {
 		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
 	}
 }
