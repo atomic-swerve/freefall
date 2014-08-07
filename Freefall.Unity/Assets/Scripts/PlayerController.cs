@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour {
 	public bool Grounded { get; set; }
 	public bool Crouching { get; set; }
 	public bool DroppingThroughPlatform { get; set; }
-	public bool Airborne { get; set; }
 
 	// Use this for initialization
 	void Awake () {
@@ -40,7 +39,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Grounded = groundChecker.CheckGrounded(LayerMask.NameToLayer("Ground")) || 
+		Grounded = groundChecker.CheckGrounded(LayerMask.NameToLayer("Ground")) || groundChecker.CheckGrounded(LayerMask.NameToLayer("RiseThrough Ground")) ||
 		(!DroppingThroughPlatform && groundChecker.CheckGrounded(LayerMask.NameToLayer("DropThrough Ground")));
 		
 		if(DroppingThroughPlatform && dropThrough.TileCleared()) {
@@ -48,7 +47,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if(Grounded) {
-			Airborne = true;
+			print("Grounded");
 			dropThrough.HandleDropInput();
 
 			if(!DroppingThroughPlatform) {
@@ -60,8 +59,6 @@ public class PlayerController : MonoBehaviour {
 				crouchMotion.HandleCrouchInput();				
 			}
 		} else {
-			Airborne = false;
-
 			// Enable gravity for free fall.
 			if(!Gliding) {
 				playerGravity.EnableGravity();
