@@ -112,7 +112,6 @@ public class Passable : MonoBehaviour {
 		lateralHits.AddRange(lateralMiddleHits);
 		lateralHits.Add(lateralBottomHit);
 
-		// Activate collisions for tiles found to left or right of player only if player is not currently within a tile.
 		foreach(RaycastHit2D hit in lateralHits) {
 			Physics2D.IgnoreCollision(boxCollider2D, hit.collider, true);
 			Physics2D.IgnoreCollision(circleCollider2D, hit.collider, true);
