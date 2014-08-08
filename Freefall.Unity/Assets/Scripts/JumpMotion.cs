@@ -13,6 +13,7 @@ public class JumpMotion : MonoBehaviour {
 	public void HandleJumpInput() {
 		if(Input.GetButtonDown("A")) {
 			player.Jumping = true;
+			Jump();
 		}
 	}
 
