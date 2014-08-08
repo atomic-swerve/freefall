@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour {
 	private JumpMotion jumpMotion;
 	private CrouchMotion crouchMotion;
 	private DropThrough dropThrough;
-	private RiseThrough riseThrough;
+	private Passable passable;
 
 	// Non-Motion State Control Components
 	private GroundChecker groundChecker;
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour {
 		jumpMotion = GetComponent<JumpMotion>();
 		crouchMotion = GetComponent<CrouchMotion>();
 		dropThrough = GetComponent<DropThrough>();
-		riseThrough = GetComponent<RiseThrough>();
+		passable = GetComponent<Passable>();
 
 		groundChecker = GetComponent<GroundChecker>();
 		playerGravity = GetComponent<PlayerGravity>();
@@ -41,10 +41,10 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		riseThrough.HandleRiseThroughPlatforms();
+		passable.HandlePassablePlatforms();
 
-		Grounded = groundChecker.CheckGrounded(LayerMask.NameToLayer("Ground")) || groundChecker.CheckGrounded(LayerMask.NameToLayer("RiseThrough Ground")) ||
-		(!DroppingThroughPlatform && groundChecker.CheckGrounded(LayerMask.NameToLayer("DropThrough Ground")));
+		Grounded = groundChecker.CheckGrounded(LayerMask.NameToLayer("Ground")) ||
+		(!DroppingThroughPlatform && groundChecker.CheckGrounded(LayerMask.NameToLayer("Passable Ground")));
 		
 		if(DroppingThroughPlatform && dropThrough.TileCleared()) {
 			dropThrough.DeactivateDrop();
