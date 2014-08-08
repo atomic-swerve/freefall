@@ -13,7 +13,6 @@ public abstract class PixelatedMotion : MonoBehaviour {
 		float px = Mathf.RoundToInt(parent.position.x) + GetXOffset();
 		float py = Mathf.RoundToInt(parent.position.y) + GetYOffset();
 		float pz = Mathf.RoundToInt(parent.position.z);
-		Debug.Log ("("+px+", "+py+", "+pz+")");
 		transform.position = new Vector3(px, py, pz);
 	}
 }
