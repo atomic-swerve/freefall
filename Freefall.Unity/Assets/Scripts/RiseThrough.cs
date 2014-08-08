@@ -24,7 +24,6 @@ public class RiseThrough : MonoBehaviour {
 		Vector2 boxCenter = new Vector2(boxCenter3D.x, boxCenter3D.y);
 		Vector2 leftCenter = new Vector2(boxCenter.x - halfColliderWidth, boxCenter.y);
 		
-		// Subtract raisedPlatformTileSize so that the raycast doesn't un-ignore the collision layer while player is still passing through the tile.
 		Vector2 bottomCenter = new Vector2(boxCenter.x, boxCenter.y - halfColliderHeight);
 		Vector2 lowerLeft = new Vector2(boxCenter.x - halfColliderWidth, boxCenter.y - halfColliderHeight);
 		Vector2 lowerRight = new Vector2(boxCenter.x + halfColliderWidth, boxCenter.y - halfColliderHeight);
