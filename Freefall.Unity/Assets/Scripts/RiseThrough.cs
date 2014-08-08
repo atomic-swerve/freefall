@@ -4,16 +4,18 @@ using System.Collections.Generic;
 
 public class RiseThrough : MonoBehaviour {
 
+	public PlayerController player;
 	private BoxCollider2D boxCollider2D;
 	private CircleCollider2D circleCollider2D;
 
 	void Awake() {
 		boxCollider2D = GetComponent<BoxCollider2D>();
 		circleCollider2D = GetComponent<CircleCollider2D>();
+		player = GetComponent<PlayerController>();
 	}
 
 	public void HandleRiseThroughPlatforms() {
-		int riseThroughGroundLayerIndex = LayerMask.NameToLayer("RiseThrough Ground");
+		int riseThroughGroundLayerIndex = LayerMask.NameToLayer("DropThrough Ground");
 
 		float halfColliderWidth = (boxCollider2D.size.x * transform.localScale.x) / 2;
 		float halfColliderHeight = (boxCollider2D.size.y * transform.localScale.y) / 2;
@@ -47,9 +49,9 @@ public class RiseThrough : MonoBehaviour {
 		RaycastHit2D rightUpHit = Physics2D.Raycast(topRight, upwardsVector, Mathf.Infinity, 1 << riseThroughGroundLayerIndex);
 
 		// All risethrough tiles detected to the left or right will have collisions un-ignored.
-		RaycastHit2D lateralTopHit = Physics2D.Raycast(new Vector2(leftCenter.x - 15f, leftCenter.y), rightVector, boxCollider2D.size.x + 30f, 1 << riseThroughGroundLayerIndex);
-		RaycastHit2D lateralMiddleHit = Physics2D.Raycast(new Vector2(lowerLeft.x - 15f, lowerLeft.y), rightVector, boxCollider2D.size.x + 30f, 1 << riseThroughGroundLayerIndex);
-		RaycastHit2D lateralBottomHit = Physics2D.Raycast(new Vector2(lowerRight.x - 15f, lowerRight.y), rightVector, boxCollider2D.size.x + 30f, 1 << riseThroughGroundLayerIndex);
+		RaycastHit2D lateralTopHit = Physics2D.Raycast(new Vector2(leftCenter.x - 100f, leftCenter.y), rightVector, boxCollider2D.size.x + 200f, 1 << riseThroughGroundLayerIndex);
+		RaycastHit2D[] lateralMiddleHits = Physics2D.RaycastAll(new Vector2(lowerLeft.x - 100f, lowerLeft.y), rightVector, boxCollider2D.size.x + 2000f, 1 << riseThroughGroundLayerIndex);
+		RaycastHit2D lateralBottomHit = Physics2D.Raycast(new Vector2(lowerRight.x - 100f, lowerRight.y), rightVector, boxCollider2D.size.x + 200f, 1 << riseThroughGroundLayerIndex);
 
 		List<RaycastHit2D> downHits = new List<RaycastHit2D>();
 		downHits.Add(middleDownHit);
@@ -63,11 +65,16 @@ public class RiseThrough : MonoBehaviour {
 
 		List<RaycastHit2D> lateralHits = new List<RaycastHit2D>();
 		lateralHits.Add(lateralTopHit);
-		lateralHits.Add(lateralMiddleHit);
+		lateralHits.AddRange(lateralMiddleHits);
 		lateralHits.Add(lateralBottomHit);
 
+
+
 		// Activate collisions for tiles found below player's bottom edge only if player's bottom edge is not currently passing through a risethrough tile.
-		if(!Physics2D.Raycast(bottomCenter, upwardsVector, .1f, 1 << riseThroughGroundLayerIndex)) {
+		if(!Physics2D.Raycast(bottomCenter, upwardsVector, .1f, 1 << riseThroughGroundLayerIndex) &&
+		!Physics2D.Raycast(lowerLeft, upwardsVector, .1f, 1 << riseThroughGroundLayerIndex) &&
+		!Physics2D.Raycast(lowerRight, upwardsVector, .1f, 1 << riseThroughGroundLayerIndex) &&
+		 !player.DroppingThroughPlatform) {
 			foreach(RaycastHit2D hit in downHits) {
 				Physics2D.IgnoreCollision(boxCollider2D, hit.collider, false);
 				Physics2D.IgnoreCollision(circleCollider2D, hit.collider, false);
@@ -75,13 +82,9 @@ public class RiseThrough : MonoBehaviour {
 		}
 
 		// Activate collisions for tiles found to left or right of player only if player is not currently within a tile.
-		if(!Physics2D.Raycast(bottomCenter, upwardsVector, .1f, 1 << riseThroughGroundLayerIndex) && 
-			!Physics2D.Raycast(boxCenter, rightVector, .1f, 1 << riseThroughGroundLayerIndex) &&
-			!Physics2D.Raycast(topCenter, downwardsVector, .1f, 1 << riseThroughGroundLayerIndex)) {
-			foreach(RaycastHit2D hit in lateralHits) {
-				Physics2D.IgnoreCollision(boxCollider2D, hit.collider, false);
-				Physics2D.IgnoreCollision(circleCollider2D, hit.collider, false);
-			}
+		foreach(RaycastHit2D hit in lateralHits) {
+			Physics2D.IgnoreCollision(boxCollider2D, hit.collider, true);
+			Physics2D.IgnoreCollision(circleCollider2D, hit.collider, true);
 		}
 
 		// Disable collisions for tiles found above player so that player can jump through them.

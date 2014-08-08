@@ -35,7 +35,9 @@ public class GroundChecker : MonoBehaviour {
 		return (Physics2D.Raycast(boxBottomCenter, downwardsVector, colliderToGroundDistance, 1 << groundLayerIndex)
 			|| Physics2D.Raycast(boxLowerLeftCorner, downwardsVector, colliderToGroundDistance, 1 << groundLayerIndex)
 			|| Physics2D.Raycast(boxLowerRightCorner, downwardsVector, colliderToGroundDistance, 1 << groundLayerIndex))
-			&& !Physics2D.Raycast(boxBottomCenter, upwardsVector, .2f, 1 << groundLayerIndex);
+			&& !Physics2D.Raycast(boxBottomCenter, upwardsVector, .2f, 1 << groundLayerIndex)
+			&& !Physics2D.Raycast(boxLowerLeftCorner, upwardsVector, .2f, 1 << groundLayerIndex)
+			&& !Physics2D.Raycast(boxLowerRightCorner, upwardsVector, .2f, 1 << groundLayerIndex);
 	}
 
 	public RaycastHit2D[] GetHits(int groundLayerIndex) {
