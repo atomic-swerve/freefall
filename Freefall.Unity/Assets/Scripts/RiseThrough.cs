@@ -37,14 +37,17 @@ public class RiseThrough : MonoBehaviour {
 		Vector2 upwardsVector = new Vector2(0, 1);
 		Vector2 rightVector = new Vector2(1, 0);
 
+		// All risethrough tiles detected below will have collisions un-ignored.
 		RaycastHit2D middleDownHit = Physics2D.Raycast(bottomCenter, downwardsVector, Mathf.Infinity, 1 << riseThroughGroundLayerIndex);
 		RaycastHit2D leftDownHit = Physics2D.Raycast(lowerLeft, downwardsVector, Mathf.Infinity, 1 << riseThroughGroundLayerIndex);
 		RaycastHit2D rightDownHit = Physics2D.Raycast(lowerRight, downwardsVector, Mathf.Infinity, 1 << riseThroughGroundLayerIndex);
 
+		// All risethrough tiles detected above will have collisions ignored.
 		RaycastHit2D middleUpHit = Physics2D.Raycast(topCenter, upwardsVector, Mathf.Infinity, 1 << riseThroughGroundLayerIndex);
 		RaycastHit2D leftUpHit = Physics2D.Raycast(topLeft, upwardsVector, Mathf.Infinity, 1 << riseThroughGroundLayerIndex);
 		RaycastHit2D rightUpHit = Physics2D.Raycast(topRight, upwardsVector, Mathf.Infinity, 1 << riseThroughGroundLayerIndex);
 
+		// All risethrough tiles detected to the left or right will have collisions un-ignored.
 		RaycastHit2D lateralTopHit = Physics2D.Raycast(new Vector2(leftCenter.x - 15f, leftCenter.y), rightVector, boxCollider2D.size.x + 30f, 1 << riseThroughGroundLayerIndex);
 		RaycastHit2D lateralMiddleHit = Physics2D.Raycast(new Vector2(lowerLeft.x - 15f, lowerLeft.y), rightVector, boxCollider2D.size.x + 30f, 1 << riseThroughGroundLayerIndex);
 		RaycastHit2D lateralBottomHit = Physics2D.Raycast(new Vector2(lowerRight.x - 15f, lowerRight.y), rightVector, boxCollider2D.size.x + 30f, 1 << riseThroughGroundLayerIndex);
@@ -64,6 +67,7 @@ public class RiseThrough : MonoBehaviour {
 		lateralHits.Add(lateralMiddleHit);
 		lateralHits.Add(lateralBottomHit);
 
+		// Activate collisions for tiles found below player's bottom edge only if player's bottom edge is not currently passing through a risethrough tile.
 		if(!Physics2D.Raycast(bottomCenter, upwardsVector, .1f, 1 << riseThroughGroundLayerIndex)) {
 			foreach(RaycastHit2D hit in downHits) {
 				Physics2D.IgnoreCollision(boxCollider2D, hit.collider, false);
@@ -71,6 +75,7 @@ public class RiseThrough : MonoBehaviour {
 			}
 		}
 
+		// Activate collisions for tiles found to left or right of player only if player is not currently within a tile.
 		if(!Physics2D.Raycast(bottomCenter, upwardsVector, .1f, 1 << riseThroughGroundLayerIndex) && 
 			!Physics2D.Raycast(boxCenter, rightVector, .1f, 1 << riseThroughGroundLayerIndex) &&
 			!Physics2D.Raycast(topCenter, downwardsVector, .1f, 1 << riseThroughGroundLayerIndex)) {
@@ -80,6 +85,7 @@ public class RiseThrough : MonoBehaviour {
 			}
 		}
 
+		// Disable collisions for tiles found above player so that player can jump through them.
 		foreach(RaycastHit2D hit in upHits) {
 			Physics2D.IgnoreCollision(boxCollider2D, hit.collider, true);
 			Physics2D.IgnoreCollision(circleCollider2D, hit.collider, true);
