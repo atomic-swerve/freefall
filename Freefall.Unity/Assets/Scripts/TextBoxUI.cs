@@ -7,6 +7,9 @@ using System.Text;
 
 public class TextBoxUI : UIComponent {
 
+    public delegate void OnCloseCallback();
+    private OnCloseCallback onCloseCallbacks;
+
 	public int fontColorKey;
 	public Rect textLineRelativeBounds;
 
@@ -71,6 +74,14 @@ public class TextBoxUI : UIComponent {
 		return lines;
 	}
 
+    public void AddOnCloseCallback(OnCloseCallback callback) {
+        onCloseCallbacks += callback;
+    }
+    
+    public void RemoveOnCloseCallback(OnCloseCallback callback) {
+        onCloseCallbacks -= callback;
+    }
+    
 	public void SetTextSource(string textSource) {
 		string filename = "Assets/Data/" + textSource;
 		IList<string> lines = readSourceFile(filename);
@@ -100,6 +111,9 @@ public class TextBoxUI : UIComponent {
 				currentTextIndex += 2;
 			} else {
 				currentTextIndex = 0;
+                if (onCloseCallbacks != null) {
+                    onCloseCallbacks();
+                }
 				Hide();
 			}
 		}
