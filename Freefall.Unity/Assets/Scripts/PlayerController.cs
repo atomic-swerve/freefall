@@ -77,9 +77,9 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate() {	
 		if(Gliding) {
-			glideMotion.Glide();
+			glideMotion.HandleGlideMovement();
 		} else {
-			nonGlideMotion.Move();
+			nonGlideMotion.HandleNonGlideMovement();
 		} 
 
 		if(Jumping) {

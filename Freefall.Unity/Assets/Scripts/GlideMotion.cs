@@ -33,7 +33,7 @@ public class GlideMotion : MonoBehaviour {
 		player.Gliding = false;
 	}
 
-	public void Glide() {
+	public void HandleGlideMovement() {
 		Vector2 movement = rigidbody2D.velocity;
 
 		// Accelerate on any axis receiving input.
