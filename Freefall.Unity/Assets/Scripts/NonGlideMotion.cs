@@ -11,9 +11,11 @@ public class NonGlideMotion : MonoBehaviour {
 	public float airDeceleration = 3f;
 
 	private PlayerController player;
+	private PlayerWindMotion playerWindMotion;
 
 	void Awake() {
 		player = GetComponent<PlayerController>();
+		playerWindMotion = GetComponent<PlayerWindMotion>();
 	}
 
 	public void HandleNonGlideMovement() {
@@ -53,6 +55,10 @@ public class NonGlideMotion : MonoBehaviour {
 					movement.x = 0;
 				}
 			}
+		}
+
+		if(!player.Grounded) {
+			playerWindMotion.ApplyWind(ref movement);
 		}
 
 		rigidbody2D.velocity = movement;

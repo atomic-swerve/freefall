@@ -8,10 +8,12 @@ public class GlideMotion : MonoBehaviour {
 
 	private PlayerController player;
 	private PlayerGravity playerGravity;
+	private PlayerWindMotion playerWindMotion;
 
 	void Awake () {
 		player = GetComponent<PlayerController>();
 		playerGravity = GetComponent<PlayerGravity>();
+		playerWindMotion = GetComponent<PlayerWindMotion>();
 	}
 
 	public void HandleGlideInput() {
@@ -91,6 +93,8 @@ public class GlideMotion : MonoBehaviour {
 				}
 			}
 		}
+
+		playerWindMotion.ApplyWind(ref movement);
 
 		rigidbody2D.velocity = movement;
 	}
