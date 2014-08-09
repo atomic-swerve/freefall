@@ -2,92 +2,98 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
+	// Motion Controls
+	private GlideMotion glideMotion;
+	private NonGlideMotion nonGlideMotion;
+	private JumpMotion jumpMotion;
+	private CrouchMotion crouchMotion;
+	private DropThrough dropThrough;
+	private Passable passable;
 
-    public int totalHealth = 10;
-    public int maxHealth = 10;
-    public int damagePower = 5;
+	// Non-Motion State Control Components
+	private GroundChecker groundChecker;
+	private PlayerGravity playerGravity;
 
-	public float maxGlideSpeed = 15f;
-	public float glideAcceleration = 1.2f;
-	public float glideDeceleration = .6f;
 
-	private bool gliding = true;
+	// Player State
+	public bool Gliding { get; set; }
+	public bool Jumping { get; set; }
+	public bool Grounded { get; set; }
+	public bool Crouching { get; set; }
+	public bool DroppingThroughPlatform { get; set; }
 
 	// Use this for initialization
 	void Awake () {
+		//Initialize references to other components of Player.
+		glideMotion = GetComponent<GlideMotion>();
+		nonGlideMotion = GetComponent<NonGlideMotion>();
+		jumpMotion = GetComponent<JumpMotion>();
+		crouchMotion = GetComponent<CrouchMotion>();
+		dropThrough = GetComponent<DropThrough>();
+		passable = GetComponent<Passable>();
+
+		groundChecker = GetComponent<GroundChecker>();
+		playerGravity = GetComponent<PlayerGravity>();
+	}
+
+	void Start() {
+		Gliding = true; // Start with glide enabled for testing.
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		passable.HandlePassablePlatforms();
+
+		Grounded = groundChecker.CheckGrounded(LayerMask.NameToLayer("Ground")) ||
+		(!DroppingThroughPlatform && groundChecker.CheckGrounded(LayerMask.NameToLayer("Passable Ground")));
+		
+		if(DroppingThroughPlatform && dropThrough.TileCleared()) {
+			dropThrough.DeactivateDrop();
+		}
+
+		if(Grounded) {
+			dropThrough.HandleDropInput();
+
+			if(!DroppingThroughPlatform) {
+				playerGravity.DisableGravity();
+				this.DisableVerticalVelocity();
+				glideMotion.DeactivateGlide();
+
+				jumpMotion.HandleJumpInput();
+				crouchMotion.HandleCrouchInput();				
+			}
+		} else {
+			// Enable gravity for free fall.
+			if(!Gliding) {
+				playerGravity.EnableGravity();
+			}
+
+			// Handle all possible airborne player actions
+			if(!DroppingThroughPlatform) {
+				glideMotion.HandleGlideInput();
+			}
+		}
 	}
 
-	void FixedUpdate() {
-		if(gliding) {
-			Glide();
+	void FixedUpdate() {	
+		if(Gliding) {
+			glideMotion.Glide();
+		} else {
+			nonGlideMotion.Move();
+		} 
+
+		if(Jumping) {
+			playerGravity.EnableGravity();
+			jumpMotion.Jump();
+			Jumping = false;
 		}
 	}
 
-	private void Glide() {
-		Vector2 movement = rigidbody2D.velocity;
-
-		// Accelerate on any axis receiving input.
-		if(Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x > -maxGlideSpeed) {
-			movement.x -= glideAcceleration;
-			if(movement.x < -maxGlideSpeed) {
-				movement.x = -maxGlideSpeed;
-			} 
+	// Stop player's descent.
+	public void DisableVerticalVelocity() {
+		if(rigidbody2D.velocity.y < 0) {
+			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);			
 		}
-		if(Input.GetAxis("X-Axis") > 0 && rigidbody2D.velocity.x < maxGlideSpeed) {
-			movement.x += glideAcceleration; 
-			if(movement.x > maxGlideSpeed) {
-				movement.x = maxGlideSpeed;
-			} 
-		}
-		if(Input.GetAxis("Y-Axis") > 0 && rigidbody2D.velocity.y < maxGlideSpeed) {
-			movement.y += glideAcceleration;
-			if(movement.y > maxGlideSpeed) {
-				movement.y = maxGlideSpeed;
-			}  
-		}
-		if(Input.GetAxis("Y-Axis") < 0 && rigidbody2D.velocity.y > -maxGlideSpeed) {
-			movement.y -= glideAcceleration; 
-			if(movement.y < -maxGlideSpeed) {
-				movement.y = -maxGlideSpeed;
-			} 
-		}
-
-		// Decelerate on any axis receiving no input.
-		if(Input.GetAxis("X-Axis") == 0) {
-			if(movement.x < 0) {
-				movement.x += glideDeceleration;
-				if(movement.x > 0) {
-					movement.x = 0;
-				}
-			}
-			if(movement.x > 0) {
-				movement.x -= glideDeceleration;
-				if(movement.x < 0) {
-					movement.x = 0;
-				}
-			}
-		}
-		if(Input.GetAxis("Y-Axis") == 0) {
-			if(movement.y < 0) {
-				movement.y += glideDeceleration;
-				if(movement.y > 0) {
-					movement.y = 0;
-				}
-			}
-			if(movement.y > 0) {
-				movement.y -= glideDeceleration;
-				if(movement.y < 0) {
-					movement.y = 0;
-				}
-			}
-		}
-
-		rigidbody2D.velocity = movement;
 	}
 
     void OnCollisionEnter2D(Collision2D collision)

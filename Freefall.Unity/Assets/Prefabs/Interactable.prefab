@@ -10,8 +10,8 @@ GameObject:
   - 4: {fileID: 400000}
   - 212: {fileID: 21200000}
   - 95: {fileID: 9500000}
-  - 114: {fileID: 11400000}
   - 61: {fileID: 6100000}
+  - 114: {fileID: 11400000}
   m_Layer: 0
   m_Name: Interactable
   m_TagString: Untagged
@@ -67,6 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844fb7490c951804384f73417e5161b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShouldShowIndicator: 1
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
