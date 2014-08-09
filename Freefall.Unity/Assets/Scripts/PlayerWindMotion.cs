@@ -6,6 +6,11 @@ public class PlayerWindMotion : MonoBehaviour {
 	public float WindModifierY { get; set; }
 	public bool InWindlessArea { get; set; }
 
+	void Start() {
+		WindModifierX = 0;
+		WindModifierY = 0;
+	}
+
 	public void ApplyWindEffect(ref Vector2 velocity) {
 		velocity.x += WindModifierX;
 		velocity.y += WindModifierY;

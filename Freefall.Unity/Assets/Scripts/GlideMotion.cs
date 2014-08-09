@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class GlideMotion : MonoBehaviour {
-	public float maxGlideSpeed = 80f;
+	public float maxGlideSpeedBase = 80f;
 	public float glideAcceleration = 10f;
 	public float glideDeceleration = 3f;
 
@@ -39,16 +39,16 @@ public class GlideMotion : MonoBehaviour {
 		Vector2 movement = rigidbody2D.velocity;
 
 		// Accelerate on any axis receiving input.
-		if(Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x > -maxGlideSpeed) {
+		if(Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x > -maxGlideSpeedBase) {
 			movement.x -= glideAcceleration;
 		}
-		if(Input.GetAxis("X-Axis") > 0 && rigidbody2D.velocity.x < maxGlideSpeed) {
+		if(Input.GetAxis("X-Axis") > 0 && rigidbody2D.velocity.x < maxGlideSpeedBase) {
 			movement.x += glideAcceleration; 
 		}
-		if(Input.GetAxis("Y-Axis") > 0 && rigidbody2D.velocity.y < maxGlideSpeed) {
+		if(Input.GetAxis("Y-Axis") > 0 && rigidbody2D.velocity.y < maxGlideSpeedBase) {
 			movement.y += glideAcceleration;
 		}
-		if(Input.GetAxis("Y-Axis") < 0 && rigidbody2D.velocity.y > -maxGlideSpeed) {
+		if(Input.GetAxis("Y-Axis") < 0 && rigidbody2D.velocity.y > -maxGlideSpeedBase) {
 			movement.y -= glideAcceleration; 
 		}
 
@@ -84,23 +84,23 @@ public class GlideMotion : MonoBehaviour {
 
 		playerWindMotion.ApplyWindEffect(ref movement);
 
-        EnforceMaximumSpeed(ref movement);
+        EnforceMaximumSpeed(ref movement, maxGlideSpeedBase + playerWindMotion.WindModifierX, maxGlideSpeedBase + playerWindMotion.WindModifierY);
 
 		rigidbody2D.velocity = movement;
 	}
 
-    private void EnforceMaximumSpeed(ref Vector2 movement) {
-        if(movement.x > maxGlideSpeed) {
-            movement.x = maxGlideSpeed;
+    private void EnforceMaximumSpeed(ref Vector2 movement, float maxGlideSpeedX, float maxGlideSpeedY) {
+        if(movement.x > maxGlideSpeedX) {
+            movement.x = maxGlideSpeedX;
         }
-        if(movement.x < -maxGlideSpeed) {
-            movement.x = -maxGlideSpeed;
+        if(movement.x < -maxGlideSpeedX) {
+            movement.x = -maxGlideSpeedX;
         }
-        if(movement.y > maxGlideSpeed) {
-            movement.y = maxGlideSpeed;
+        if(movement.y > maxGlideSpeedY) {
+            movement.y = maxGlideSpeedY;
         }
-        if(movement.y < -maxGlideSpeed) {
-            movement.y = -maxGlideSpeed;
+        if(movement.y < -maxGlideSpeedY) {
+            movement.y = -maxGlideSpeedY;
         }
     }
 }
