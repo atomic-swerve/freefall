@@ -94,7 +94,7 @@ public class GlideMotion : MonoBehaviour {
 			}
 		}
 
-		playerWindMotion.ApplyWind(ref movement);
+		playerWindMotion.ApplyWindEffect(ref movement);
 
 		rigidbody2D.velocity = movement;
 	}

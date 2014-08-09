@@ -58,7 +58,7 @@ public class NonGlideMotion : MonoBehaviour {
 		}
 
 		if(!player.Grounded) {
-			playerWindMotion.ApplyWind(ref movement);
+			playerWindMotion.ApplyWindEffect(ref movement);
 		}
 
 		rigidbody2D.velocity = movement;
