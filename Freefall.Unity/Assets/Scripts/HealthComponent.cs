@@ -24,8 +24,18 @@ public class HealthComponent : MonoBehaviour {
 
         if (healthPoints <= 0)
         {
+            healthPoints = 0;
             Destroy(gameObject);
             print("Enemy destroyed");
+        }
+    }
+
+    // Damage the game character
+    public void Heal()
+    {
+        if (healthPoints < maxHealthPoints)
+        {
+            this.healthPoints++;
         }
     }
 }

@@ -5,10 +5,8 @@ public class PlayerAttack : MonoBehaviour {
 
     PlayerController player;
 
-    Vector2 UP_DIRECTION = new Vector2(0, 1);
-    Vector2 DOWN_DIRECTION = new Vector2(0, -1);
-    Vector2 RIGHT_DIRECTION = new Vector2(1, 0);
-    Vector2 LEFT_DIRECTION = new Vector2(-1, 0);
+    Vector2 attackBox = new Vector2(7.5f, 7.5f); //modify based on size of player
+    float attackDistance = 5.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -22,27 +20,24 @@ public class PlayerAttack : MonoBehaviour {
 
     void PerformAttack()
     {
-        Vector2 attackBox = new Vector2(7.5f, 7.5f);
         Vector2 attackPosition = new Vector2(player.transform.position.x, player.transform.position.y);
-        
-        float attackDistance = 5.0f;
 
         if (Input.GetButtonDown("B") && Input.GetAxis("Y-Axis") > 0)
         {
-            Attack(attackPosition, attackBox, UP_DIRECTION, attackDistance);
+            Attack(attackPosition, attackBox, Vector2.up, attackDistance);
         }
         if (Input.GetButtonDown("B") && Input.GetAxis("X-Axis") < 0)
         {
-            Attack(attackPosition, attackBox, LEFT_DIRECTION, attackDistance);
+            Attack(attackPosition, attackBox, -Vector2.right, attackDistance);
         }
         if (Input.GetButtonDown("B") && Input.GetAxis("X-Axis") > 0)
         {
-            Attack(attackPosition, attackBox, RIGHT_DIRECTION, attackDistance);
+            Attack(attackPosition, attackBox, Vector2.right, attackDistance);
         }
         if (Input.GetButtonDown("B") && Input.GetAxis("Y-Axis") < 0)
         {
             if (player.Jumping || player.Gliding) 
-                Attack(attackPosition, attackBox, DOWN_DIRECTION, attackDistance);
+                Attack(attackPosition, attackBox, -Vector2.up, attackDistance);
         }
         if (Input.GetButtonDown("B"))
         {
@@ -59,10 +54,13 @@ public class PlayerAttack : MonoBehaviour {
             GameObject hitObject = hitObjectsRaycast[i].collider.gameObject;
             HealthComponent objectHealth = hitObject.GetComponent<HealthComponent>();
 
-            if (objectHealth.isEnemy)
+            if (objectHealth != null)
             {
-                print("Enemy damaged");
-                objectHealth.Damage();
+                if (objectHealth.isEnemy)
+                {
+                    print("Enemy damaged");
+                    objectHealth.Damage();
+                }
             }
         }
     }
