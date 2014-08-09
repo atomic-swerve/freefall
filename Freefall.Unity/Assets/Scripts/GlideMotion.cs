@@ -41,27 +41,15 @@ public class GlideMotion : MonoBehaviour {
 		// Accelerate on any axis receiving input.
 		if(Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x > -maxGlideSpeed) {
 			movement.x -= glideAcceleration;
-			if(movement.x < -maxGlideSpeed) {
-				movement.x = -maxGlideSpeed;
-			} 
 		}
 		if(Input.GetAxis("X-Axis") > 0 && rigidbody2D.velocity.x < maxGlideSpeed) {
 			movement.x += glideAcceleration; 
-			if(movement.x > maxGlideSpeed) {
-				movement.x = maxGlideSpeed;
-			} 
 		}
 		if(Input.GetAxis("Y-Axis") > 0 && rigidbody2D.velocity.y < maxGlideSpeed) {
 			movement.y += glideAcceleration;
-			if(movement.y > maxGlideSpeed) {
-				movement.y = maxGlideSpeed;
-			}  
 		}
 		if(Input.GetAxis("Y-Axis") < 0 && rigidbody2D.velocity.y > -maxGlideSpeed) {
 			movement.y -= glideAcceleration; 
-			if(movement.y < -maxGlideSpeed) {
-				movement.y = -maxGlideSpeed;
-			} 
 		}
 
 		// Decelerate on any axis receiving no input.
@@ -96,6 +84,23 @@ public class GlideMotion : MonoBehaviour {
 
 		playerWindMotion.ApplyWindEffect(ref movement);
 
+        EnforceMaximumSpeed(ref movement);
+
 		rigidbody2D.velocity = movement;
 	}
+
+    private void EnforceMaximumSpeed(ref Vector2 movement) {
+        if(movement.x > maxGlideSpeed) {
+            movement.x = maxGlideSpeed;
+        }
+        if(movement.x < -maxGlideSpeed) {
+            movement.x = -maxGlideSpeed;
+        }
+        if(movement.y > maxGlideSpeed) {
+            movement.y = maxGlideSpeed;
+        }
+        if(movement.y < -maxGlideSpeed) {
+            movement.y = -maxGlideSpeed;
+        }
+    }
 }

@@ -31,15 +31,9 @@ public class NonGlideMotion : MonoBehaviour {
 
 		if(Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x > -maxNonGlideSpeed) {
 			movement.x -= acceleration;
-			if(movement.x < -maxNonGlideSpeed) {
-				movement.x = -maxNonGlideSpeed;
-			} 
 		}
 		if(Input.GetAxis("X-Axis") > 0 && rigidbody2D.velocity.x < maxNonGlideSpeed) {
 			movement.x += acceleration; 
-			if(movement.x > maxNonGlideSpeed) {
-				movement.x = maxNonGlideSpeed;
-			} 
 		}
 
 		if(Input.GetAxis("X-Axis") == 0) {
@@ -58,5 +52,19 @@ public class NonGlideMotion : MonoBehaviour {
 		}
 
 		rigidbody2D.velocity = movement;
+
+        EnforceMaximumSpeed(ref movement);
 	}
+
+    private void EnforceMaximumSpeed(ref Vector2 movement)
+    {
+        if (movement.x > maxNonGlideSpeed)
+        {
+            movement.x = maxNonGlideSpeed;
+        }
+        if (movement.x < -maxNonGlideSpeed)
+        {
+            movement.x = -maxNonGlideSpeed;
+        }
+    }
 }
