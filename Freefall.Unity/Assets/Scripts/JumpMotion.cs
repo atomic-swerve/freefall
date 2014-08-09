@@ -3,6 +3,7 @@ using System.Collections;
 
 public class JumpMotion : MonoBehaviour {
 	public float jumpVelocity = 160f;
+	public float jumpDecelerationRate = 3f;
 
 	private PlayerController player;
 
@@ -13,12 +14,22 @@ public class JumpMotion : MonoBehaviour {
 	public void HandleJumpInput() {
 		if(Input.GetButtonDown("A")) {
 			player.Jumping = true;
-			Jump();
+			InitiateJump();
 		}
 	}
 
-	public void Jump() {
+	public void InitiateJump() {
 		Vector2 newVelocity = new Vector2(rigidbody2D.velocity.x, jumpVelocity);
 		rigidbody2D.velocity = newVelocity;
+	}
+
+	public void HandleJumpState() {
+		if(!Input.GetButton("A")) {
+			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y - jumpDecelerationRate);				
+		}
+
+		if(rigidbody2D.velocity.y < 0) {
+			player.Jumping = false;
+		}		
 	}
 }

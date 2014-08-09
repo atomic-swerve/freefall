@@ -2,8 +2,6 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-	public float jumpDecelerationRate = 3f;
-
 	// Motion Controls
 	private GlideMotion glideMotion;
 	private NonGlideMotion nonGlideMotion;
@@ -85,13 +83,7 @@ public class PlayerController : MonoBehaviour {
 		} 
 
 		if(Jumping) {
-			if(!Input.GetButton("A")) {
-				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y - jumpDecelerationRate);				
-			}
-
-			if(rigidbody2D.velocity.y < 0) {
-				Jumping = false;
-			}
+			jumpMotion.HandleJumpState();
 		}
 	}
 
