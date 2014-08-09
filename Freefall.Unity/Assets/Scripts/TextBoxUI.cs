@@ -106,7 +106,7 @@ public class TextBoxUI : UIComponent {
 	}
 
 	public void Update() {
-		if (Input.GetButtonDown("Select")) {
+		if (Input.GetButtonDown("A")) {
 			if (currentTextIndex < (text.Length - 2)) {
 				currentTextIndex += 2;
 			} else {
