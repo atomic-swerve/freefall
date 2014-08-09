@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f3262783223b4343a3e24d8451b8035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runOnlyAtStart: 0
+  runOnlyAtStart: 1
   autoTileMode: 0
   fitToGrid: 1
   tileSize: 8
