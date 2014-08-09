@@ -2,6 +2,9 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
+
+    public Vector2 facingVector = new Vector2(1, 0);
+
 	// Motion Controls
 	private GlideMotion glideMotion;
 	private NonGlideMotion nonGlideMotion;
