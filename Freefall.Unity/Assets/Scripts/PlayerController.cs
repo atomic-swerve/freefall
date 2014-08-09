@@ -102,18 +102,12 @@ public class PlayerController : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D collision)
     {
         HealthCollectableController healthCollectable = collision.gameObject.GetComponent<HealthCollectableController>();
-        DamageCollectableController damageCollectable = collision.gameObject.GetComponent<DamageCollectableController>();
 
         if (healthCollectable != null)
         {
-            this.totalHealth = healthCollectable.Heal(totalHealth, maxHealth);
-            print("Player total health: " + this.totalHealth);
-        }
-
-        if (damageCollectable != null)
-        {
-            this.damagePower = damageCollectable.DamageUp(damagePower);
-            print("Player total power: " + this.damagePower);
+            HealthComponent playerHealth = this.GetComponent<HealthComponent>();
+            playerHealth.healthPoints = healthCollectable.Heal(playerHealth.healthPoints, playerHealth.maxHealthPoints);
+            print("Player total health: " + playerHealth.healthPoints);
         }
     }
 }
