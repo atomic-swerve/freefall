@@ -23,43 +23,43 @@ public abstract class PlayerInteraction : MonoBehaviour
 	 	 * - Returning 'Complete' will permanently disable the interaction.
 	 	 */
 		abstract protected InteractionState PerformInteraction ();
-	
-		// Internal mechanisms
-		void Start ()
-		{
-				IsPlayerColliding = false;
-				CurrentInteractionState = InteractionState.Pending;
-				SpriteRenderer = this.GetComponent<SpriteRenderer> ();
+
+		// Message Hooks
+
+		virtual protected void Awake(){
+			IsPlayerColliding = false;
+			CurrentInteractionState = InteractionState.Pending;
 		}
 
-		void Update ()
+		virtual protected void Start(){
+			SpriteRenderer = GetComponent<SpriteRenderer>();
+		}
+
+		virtual protected void Update ()
 		{
-				if (IsPlayerColliding && IsAttemptingInteraction && IsStatePending) {
-						CurrentInteractionState = InteractionState.Running;
-				}
-				if (IsStateRunning) {
-						CurrentInteractionState = PerformInteraction ();
-				}
-				if (IsStateComplete) {
-						Destroy (this);
-				}
+			if (IsPlayerColliding && IsAttemptingInteraction && IsStatePending) {
+					CurrentInteractionState = InteractionState.Running;
+			}
+			if (IsStateRunning) {
+					CurrentInteractionState = PerformInteraction();
+			}
+			if (IsStateComplete) {
+					Destroy (this);
+			}
 
 			SpriteRenderer.enabled = ShouldShowIndicator && IsStatePending;
+
+			IsPlayerColliding = false;
 		}
 
-		void OnCollisionEnter2D (Collision2D collision)
+		virtual protected void OnTriggerStay2D (Collider2D collider)
 		{
-				if (collision.gameObject.tag == "PlayerInteraction") {
+				if (collider.gameObject.name == "PlayerInteraction") {
 						IsPlayerColliding = true;
 				}
 		}
 
-		void OnCollisionExit2D (Collision2D collision)
-		{
-				if (collision.gameObject.tag == "PlayerInteraction") {
-						IsPlayerColliding = false;
-				}
-		}
+		// Behavioral Properties
 
 		private bool IsAttemptingInteraction {
 				get {
