@@ -6,16 +6,7 @@ public class AudioAPI : MonoBehaviour {
     Hashtable audioHashtable = new Hashtable();
     AudioSource audioSource;
 
-	// Use this for initialization
-	void Start () {
-        
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-	}
-
+    //Initialize the Audio Source
     void Awake()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
@@ -27,6 +18,22 @@ public class AudioAPI : MonoBehaviour {
         string audioLoopName = audioName + "_loop";
 
         StartCoroutine(PlayConnectedTheme(audioIntroName, audioLoopName));
+    }
+
+    public float PlaySong(string audioName, bool looping)
+    {
+        AudioClip audioClip;
+
+        if (!audioHashtable.ContainsKey(audioName))
+            LoadAudio(audioName);
+
+        SetAudioLooping(looping);
+
+        audioClip = (AudioClip)audioHashtable[audioName];
+        audioSource.clip = audioClip;
+        audioSource.Play();
+
+        return audioClip.length;
     }
 
     public void StopSound()
@@ -62,22 +69,6 @@ public class AudioAPI : MonoBehaviour {
     {
         AudioClip audioClip = (AudioClip)Resources.Load("AudioClips/" + audioName);
         audioHashtable.Add(audioName, audioClip);
-    }
-
-    private float PlaySong(string audioName, bool looping)
-    {
-        AudioClip audioClip;
-
-        if (!audioHashtable.ContainsKey(audioName))
-            LoadAudio(audioName);
-
-        SetAudioLooping(looping);
-
-        audioClip = (AudioClip)audioHashtable[audioName];
-        audioSource.clip = audioClip;
-        audioSource.Play();
-
-        return audioClip.length;
     }
 
     private IEnumerator PlayConnectedTheme(string audioIntroName, string audioLoopName)
