@@ -38,10 +38,9 @@ public class WindArea : MonoBehaviour {
 			playerWindMotion.WindModifierY = 0;
 			if(windless) {
 				playerWindMotion.InWindlessArea = false;
-			} else {
-				glideMotion.EnableDecelerationX = true;
-				glideMotion.EnableDecelerationY = true;
-			}
+			} 
+			glideMotion.EnableDecelerationX = true;
+			glideMotion.EnableDecelerationY = true;
 		}		
 	}
 }
