@@ -4,47 +4,47 @@ using System.Collections;
 public class AudioAPI : MonoBehaviour {
 
     Hashtable audioHashtable = new Hashtable();
-    AudioSource audioIntro;
-    AudioSource audioLoop;
+    AudioSource audioSource;
 
 	// Use this for initialization
 	void Start () {
-        //PlayTheme("freefall_home_island");
+        
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        
+
 	}
+
+    void Awake()
+    {
+        audioSource = gameObject.AddComponent<AudioSource>();
+    }
 
     public void PlayTheme(string audioName)
     {
         string audioIntroName = audioName + "_intro";
         string audioLoopName = audioName + "_loop";
 
-        audioIntro = gameObject.AddComponent<AudioSource>();
-        audioLoop = gameObject.AddComponent<AudioSource>();
-
-        float introSecs = PlayIntroSong(audioIntroName);
-        PlayLoopSong(audioLoopName, introSecs);
+        StartCoroutine(PlayConnectedTheme(audioIntroName, audioLoopName));
     }
 
     public void StopSound()
     {
-        if (audioLoop.isPlaying)
-            audioLoop.Stop();
+        if (audioSource.isPlaying)
+            audioSource.Stop();
     }
 
     public void PauseSound(AudioSource audio)
     {
-        if (audioLoop.isPlaying)
-            audioLoop.Pause();
+        if (audioSource.isPlaying)
+            audioSource.Pause();
     }
 
     public void ResumeSound(AudioSource audio)
     {
-        if (!audioLoop.isPlaying && audioLoop.clip != null)
-            audioLoop.Play();
+        if (!audioSource.isPlaying && audioSource.clip != null)
+            audioSource.Play();
     }
 
     public void PlaySFX(string audioName)
@@ -52,10 +52,10 @@ public class AudioAPI : MonoBehaviour {
         AudioClip audioClip;
 
         if (!audioHashtable.ContainsKey(audioName))
-            LoadAudio(audioName);;
+            LoadAudio(audioName);
 
         audioClip = (AudioClip)audioHashtable[audioName];
-        audioLoop.PlayOneShot(audioClip);
+        audioSource.PlayOneShot(audioClip);
     }
 
     private void LoadAudio(string audioName)
@@ -64,31 +64,31 @@ public class AudioAPI : MonoBehaviour {
         audioHashtable.Add(audioName, audioClip);
     }
 
-    private float PlayIntroSong(string audioName)
+    private float PlaySong(string audioName, bool looping)
     {
         AudioClip audioClip;
 
         if (!audioHashtable.ContainsKey(audioName))
             LoadAudio(audioName);
 
+        SetAudioLooping(looping);
+
         audioClip = (AudioClip)audioHashtable[audioName];
-        audioIntro.clip = audioClip;
-        audioIntro.Play();
+        audioSource.clip = audioClip;
+        audioSource.Play();
 
         return audioClip.length;
     }
 
-    private void PlayLoopSong(string audioName, float delaySecs)
+    private IEnumerator PlayConnectedTheme(string audioIntroName, string audioLoopName)
     {
-        AudioClip audioClip;
+        float introSeconds = PlaySong(audioIntroName, false);
+        yield return new WaitForSeconds(introSeconds);
+        PlaySong(audioLoopName, true); 
+    }
 
-        if (!audioHashtable.ContainsKey(audioName))
-            LoadAudio(audioName);
-
-        audioLoop.loop = true;
-
-        audioClip = (AudioClip)audioHashtable[audioName];
-        audioLoop.clip = audioClip;
-        audioLoop.PlayDelayed(delaySecs);
+    private void SetAudioLooping(bool looping)
+    {
+        audioSource.loop = looping;
     }
 }
