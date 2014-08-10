@@ -1,14 +1,24 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
 
 [System.Serializable]
-public class Objective : ScriptableObject {
+public class Objective {
+	public string ObjectiveName;
 	public GameObject[] ObjectiveTasks;
-	public ObjectiveCompletion CompletionAction;
+	public GameObject CompletionObject;
 
 	private IList<ObjectiveTask> TaskComponents { get; set; }
+	private ObjectiveCompletion CompletionAction { get; set; }
 
-	public void BindTasks(){
+	private Predicate<Objective> IsCurrentObjective { get; set; }
+
+	private Action<Objective> OnCompletion { get; set; }
+
+	public void BindTasks(Predicate<Objective> isCurrentObjective, Action<Objective> onCompletion){
+		IsCurrentObjective = isCurrentObjective;
+		OnCompletion = onCompletion;
+
 		TaskComponents = new List<ObjectiveTask>();
 
 		foreach(GameObject gameObject in ObjectiveTasks){
@@ -17,21 +27,28 @@ public class Objective : ScriptableObject {
 				Debug.LogWarning("Objective assigned without an ObjectiveTask!");
 			}
 
-			task.OnTaskStatusChange += ReceiveTaskStatusChange;
+			task.ShouldTaskStatusChange += ReceiveTaskStatusChange;
 			TaskComponents.Add(task);
 		}
+
+		CompletionAction = CompletionObject.GetComponent<ObjectiveCompletion>();
 	}
 
-	private void ReceiveTaskStatusChange(){
+	private bool ReceiveTaskStatusChange(){
+		if(!IsCurrentObjective(this)){
+			return false;
+		}
+
 		foreach(ObjectiveTask task in TaskComponents){
 			if(!task.IsComplete){
-				return;
+				return true;
 			}
 		}
 
 		if(CompletionAction != null){
 			CompletionAction.Complete();
 		}
-		Destroy(this);
+		OnCompletion(this);
+		return true;
 	}
 }
