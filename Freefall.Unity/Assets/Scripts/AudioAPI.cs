@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AudioAPI : MonoBehaviour {
+public class AudioAPI : MonoBehaviour  {
+    
+    public static AudioAPI Instance { get; private set; }
 
     Hashtable audioHashtable = new Hashtable();
     AudioSource audioSource;
@@ -9,7 +11,9 @@ public class AudioAPI : MonoBehaviour {
     //Initialize the Audio Source
     void Awake()
     {
-        audioSource = gameObject.AddComponent<AudioSource>();
+        if (Instance == null)
+            Instance = this;
+        Instance.audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     public void PlayTheme(string audioName)
@@ -30,28 +34,28 @@ public class AudioAPI : MonoBehaviour {
         SetAudioLooping(looping);
 
         audioClip = (AudioClip)audioHashtable[audioName];
-        audioSource.clip = audioClip;
-        audioSource.Play();
+        Instance.audioSource.clip = audioClip;
+        Instance.audioSource.Play();
 
         return audioClip.length;
     }
 
     public void StopSound()
     {
-        if (audioSource.isPlaying)
-            audioSource.Stop();
+        if (Instance.audioSource.isPlaying)
+            Instance.audioSource.Stop();
     }
 
     public void PauseSound(AudioSource audio)
     {
-        if (audioSource.isPlaying)
-            audioSource.Pause();
+        if (Instance.audioSource.isPlaying)
+            Instance.audioSource.Pause();
     }
 
     public void ResumeSound(AudioSource audio)
     {
-        if (!audioSource.isPlaying && audioSource.clip != null)
-            audioSource.Play();
+        if (!Instance.audioSource.isPlaying && Instance.audioSource.clip != null)
+            Instance.audioSource.Play();
     }
 
     public void PlaySFX(string audioName)
@@ -62,7 +66,7 @@ public class AudioAPI : MonoBehaviour {
             LoadAudio(audioName);
 
         audioClip = (AudioClip)audioHashtable[audioName];
-        audioSource.PlayOneShot(audioClip);
+        Instance.audioSource.PlayOneShot(audioClip);
     }
 
     private void LoadAudio(string audioName)
