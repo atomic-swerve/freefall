@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour {
 	private NonGlideMotion nonGlideMotion;
 	private JumpMotion jumpMotion;
 	private CrouchMotion crouchMotion;
+	private DropThrough dropThrough;
+	private Passable passable;
 
 	// Non-Motion State Control Components
 	private GroundChecker groundChecker;
@@ -17,6 +19,7 @@ public class PlayerController : MonoBehaviour {
 	public bool Jumping { get; set; }
 	public bool Grounded { get; set; }
 	public bool Crouching { get; set; }
+	public bool DroppingThroughPlatform { get; set; }
 
 	// Use this for initialization
 	void Awake () {
@@ -25,6 +28,8 @@ public class PlayerController : MonoBehaviour {
 		nonGlideMotion = GetComponent<NonGlideMotion>();
 		jumpMotion = GetComponent<JumpMotion>();
 		crouchMotion = GetComponent<CrouchMotion>();
+		dropThrough = GetComponent<DropThrough>();
+		passable = GetComponent<Passable>();
 
 		groundChecker = GetComponent<GroundChecker>();
 		playerGravity = GetComponent<PlayerGravity>();
@@ -36,15 +41,26 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Grounded = groundChecker.checkGrounded();
-		
-		if(Grounded) {
-			playerGravity.DisableGravity();
-			this.DisableVerticalVelocity();
-			glideMotion.DeactivateGlide();
+		passable.HandlePassablePlatforms();
 
-			jumpMotion.HandleJumpInput();
-			crouchMotion.HandleCrouchInput();
+		Grounded = groundChecker.CheckGrounded(LayerMask.NameToLayer("Ground")) ||
+		(!DroppingThroughPlatform && groundChecker.CheckGrounded(LayerMask.NameToLayer("Passable Ground")));
+		
+		if(DroppingThroughPlatform && dropThrough.TileCleared()) {
+			dropThrough.DeactivateDrop();
+		}
+
+		if(Grounded) {
+			dropThrough.HandleDropInput();
+
+			if(!DroppingThroughPlatform) {
+				playerGravity.DisableGravity();
+				this.DisableVerticalVelocity();
+				glideMotion.DeactivateGlide();
+
+				jumpMotion.HandleJumpInput();
+				crouchMotion.HandleCrouchInput();				
+			}
 		} else {
 			// Enable gravity for free fall.
 			if(!Gliding) {
@@ -52,7 +68,9 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			// Handle all possible airborne player actions
-			glideMotion.HandleGlideInput();
+			if(!DroppingThroughPlatform) {
+				glideMotion.HandleGlideInput();
+			}
 		}
 	}
 
@@ -70,7 +88,10 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	private void DisableVerticalVelocity() {
-		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
+	// Stop player's descent.
+	public void DisableVerticalVelocity() {
+		if(rigidbody2D.velocity.y < 0) {
+			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);			
+		}
 	}
 }
