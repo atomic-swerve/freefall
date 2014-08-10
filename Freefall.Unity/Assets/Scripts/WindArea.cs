@@ -9,7 +9,13 @@ public class WindArea : MonoBehaviour {
 	public float windyModifierY = 1f;
 	public float windlessModifierY = 1f;
 
+	public GlideMotion glideMotion;
+
 	public bool windless = false;
+
+	void Awake() {
+		glideMotion = GameObject.FindWithTag("Player").GetComponent<GlideMotion>();
+	}
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if(other.CompareTag("Player")) {
@@ -32,6 +38,9 @@ public class WindArea : MonoBehaviour {
 			playerWindMotion.WindModifierY = 0;
 			if(windless) {
 				playerWindMotion.InWindlessArea = false;
+			} else {
+				glideMotion.EnableDecelerationX = true;
+				glideMotion.EnableDecelerationY = true;
 			}
 		}		
 	}
