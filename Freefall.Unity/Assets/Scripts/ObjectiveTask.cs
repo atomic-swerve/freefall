@@ -2,17 +2,16 @@
 using System.Collections;
 
 public class ObjectiveTask : MonoBehaviour {
-	public delegate void TaskStatusChangeCallback();
-	public TaskStatusChangeCallback OnTaskStatusChange;
+	public delegate bool TaskStatusChangeCallback();
+	public TaskStatusChangeCallback ShouldTaskStatusChange;
 
-	private bool isComplete;
-	[HideInInspector] public bool IsComplete {
-		get {
-			return isComplete;
-		}
-		set{
-			isComplete = value;
-			OnTaskStatusChange();
+	public bool IsComplete { get; private set; }
+
+	public void AttemptSetCompletion(bool newCompletionStatus){
+		bool oldCompletion = IsComplete;
+		IsComplete = newCompletionStatus;
+		if(!ShouldTaskStatusChange()){
+			IsComplete = oldCompletion;
 		}
 	}
 }

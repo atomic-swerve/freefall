@@ -37,7 +37,7 @@ public abstract class PlayerInteraction : MonoBehaviour
 
 		virtual protected void Update ()
 		{
-			if (IsPlayerColliding && IsAttemptingInteraction && IsStatePending) {
+			if (IsStatePending && IsAttemptingInteraction && IsPlayerColliding) {
 					CurrentInteractionState = InteractionState.Running;
 			}
 			if (IsStateRunning) {
@@ -48,23 +48,28 @@ public abstract class PlayerInteraction : MonoBehaviour
 			}
 
 			SpriteRenderer.enabled = ShouldShowIndicator && IsStatePending;
-
-			IsPlayerColliding = false;
 		}
 
-		virtual protected void OnTriggerStay2D (Collider2D collider)
+		virtual protected void OnTriggerEnter2D (Collider2D collider)
 		{
 				if (collider.gameObject.name == "PlayerInteraction") {
 						IsPlayerColliding = true;
 				}
 		}
 
+		virtual protected void OnTriggerExit2D (Collider2D collider)
+		{
+				if (collider.gameObject.name == "PlayerInteraction") {
+						IsPlayerColliding = false;
+				}
+		}
+
 		// Behavioral Properties
 
 		private bool IsAttemptingInteraction {
-				get {
-						return Input.GetButtonDown ("B");
-				}
+			get {
+				return Input.GetButtonDown("B");
+			}
 		}
 	
 		private bool IsPlayerColliding { get; set; }
