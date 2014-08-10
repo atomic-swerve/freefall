@@ -5,6 +5,7 @@ using System.Collections;
 public class GUIManager : MonoBehaviour {
 
 	public TextBoxUI TextBox;
+	public MainMenuUI MainMenu;
 
 	public static GUIManager GetCurrentGUI(bool throwExceptionIfMissing = true) {
 		GameObject[] guiObjects = GameObject.FindGameObjectsWithTag("GUI");
