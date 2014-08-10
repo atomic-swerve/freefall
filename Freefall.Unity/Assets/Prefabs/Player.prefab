@@ -19,6 +19,10 @@ GameObject:
   - 114: {fileID: 11400000}
   - 58: {fileID: 5800000}
   - 95: {fileID: 9500000}
+  - 114: {fileID: 11400016}
+  - 114: {fileID: 11400018}
+  - 114: {fileID: 11400020}
+  - 114: {fileID: 11400022}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -165,6 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpVelocity: 160
+  jumpDecelerationRate: 3
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -177,8 +182,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxNonGlideSpeed: 80
-  nonGlideAcceleration: 20
-  nonGlideDeceleration: 3
+  groundAcceleration: 20
+  groundDeceleration: 3
+  airAcceleration: 15
+  airDeceleration: 3
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -190,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ea9e42dcbee8b74c8bfaa24a7b93615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxGlideSpeed: 80
+  maxGlideSpeedBase: 80
   glideAcceleration: 10
   glideDeceleration: 3
 --- !u!114 &11400012
@@ -214,6 +221,52 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63c0c57facd64e940bc3b8f9066a5296, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11400016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e568c4309b8a7dc418f486e845d191c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11400018
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d14bb19d5e2ec469c65c1be35d395d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+--- !u!114 &11400020
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04bbcb3ca9b9db4fbf43db0e6cad7ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropThroughTileHeight: 8
+--- !u!114 &11400022
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a961ecb8bcacec40b743e67c7109264, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &21200000
