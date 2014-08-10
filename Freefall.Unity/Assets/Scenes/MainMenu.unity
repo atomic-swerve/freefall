@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Selected: 0
+  SceneName: Scenes/Playgrounds/LevelGenTest
 --- !u!95 &47262642
 Animator:
   serializedVersion: 3
