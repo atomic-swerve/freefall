@@ -24,12 +24,12 @@ public class JumpMotion : MonoBehaviour {
 	}
 
 	public void HandleJumpState() {
-		if(!Input.GetButton("A")) {
+		if(rigidbody2D.velocity.y <= 0) {
+			player.Jumping = false;
+		}	
+
+		if(!Input.GetButton("A") && player.Jumping) {
 			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y - jumpDecelerationRate);				
 		}
-
-		if(rigidbody2D.velocity.y < 0) {
-			player.Jumping = false;
-		}		
 	}
 }

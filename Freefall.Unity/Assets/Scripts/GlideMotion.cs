@@ -38,6 +38,8 @@ public class GlideMotion : MonoBehaviour {
 
 	public void ActivateGlide() {
 		playerGravity.DisableGravity();
+		EnableDecelerationY = true;
+		EnableDecelerationX = true;
 		player.Gliding = true;
 	}
 
