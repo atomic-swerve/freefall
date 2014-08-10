@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ObjectiveACompletion : ObjectiveCompletion {
+public class ObjectiveBCompletion : ObjectiveCompletion {
 	public override void Complete(){
 		ObjectiveDisplay display = GetComponentInParent<ObjectiveDisplay>();
 		if(display == null){
 			Debug.LogWarning("No objective display found.");
 		} else {
-			display.Text = "Objective A Complete!";
+			display.Text = "Objective B Complete!";
 		}
 	}
 }

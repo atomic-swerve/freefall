@@ -1,7 +1,7 @@
 ﻿﻿using UnityEngine;
 using System.Collections;
 
-public class ObjectiveAInteraction : PlayerInteraction {
+public class EmptyObjectiveTaskInteraction : PlayerInteraction {
 	private ObjectiveTask objectiveTask;
 
 	protected override void Start(){
@@ -10,7 +10,12 @@ public class ObjectiveAInteraction : PlayerInteraction {
 	}
 
 	protected override InteractionState PerformInteraction(){
-		objectiveTask.IsComplete = true;
-		return InteractionState.Complete;
+		objectiveTask.AttemptSetCompletion(true);
+
+		if(objectiveTask.IsComplete){
+			return InteractionState.Complete;
+		} else {
+			return InteractionState.Pending;
+		}
 	}
 }
