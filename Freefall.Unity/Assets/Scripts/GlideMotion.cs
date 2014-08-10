@@ -10,6 +10,8 @@ public class GlideMotion : MonoBehaviour {
 	private PlayerGravity playerGravity;
 	private PlayerWindMotion playerWindMotion;
 
+	private BoxCollider2D box;
+
 	// These values are used for deciding whether or not to apply deceleration. Deceleration is never applied against wind, and is only
 	// applied between a player releasing directional button and the player's velocity reaching zero.
 	public bool EnableDecelerationX { get; set; }
@@ -19,6 +21,7 @@ public class GlideMotion : MonoBehaviour {
 		player = GetComponent<PlayerController>();
 		playerGravity = GetComponent<PlayerGravity>();
 		playerWindMotion = GetComponent<PlayerWindMotion>();
+		box = GetComponent<BoxCollider2D> ();
 	}
 
 	void Start() {
@@ -40,10 +43,14 @@ public class GlideMotion : MonoBehaviour {
 		playerGravity.DisableGravity();
 		EnableDecelerationY = true;
 		EnableDecelerationX = true;
+		box.center = new Vector2 (0, 16);
+		box.size = new Vector2 (28, 24);
 		player.Gliding = true;
 	}
 
 	public void DeactivateGlide() {
+		box.center = new Vector2 (0, 14);
+		box.size = new Vector2 (10, 28);
 		player.Gliding = false;
 	}
 
