@@ -9,6 +9,7 @@ public class PlayerWindMotion : MonoBehaviour {
 	void Start() {
 		WindModifierX = 0;
 		WindModifierY = 0;
+		InWindlessArea = false;
 	}
 
 	public void ApplyWindEffect(ref Vector2 velocity) {

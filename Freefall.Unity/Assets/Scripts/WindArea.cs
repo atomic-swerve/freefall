@@ -30,6 +30,9 @@ public class WindArea : MonoBehaviour {
 			PlayerWindMotion playerWindMotion = other.GetComponent<PlayerWindMotion>();
 			playerWindMotion.WindModifierX = 0;
 			playerWindMotion.WindModifierY = 0;
+			if(windless) {
+				playerWindMotion.InWindlessArea = false;
+			}
 		}		
 	}
 }
