@@ -2,33 +2,19 @@
 using System.Collections.Generic;
 
 public class ObjectiveManager : MonoBehaviour {
-	public IList<IObjective> Objectives { get; set; }
+	public Objective[] Objectives;
 
-	private IObjective CurrentObjective {
-		get {
-			return Objectives.Count == 0 ? null : Objectives[0];
+	void OnValidate(){
+		for(int i = 0; i < Objectives.Length; i++){
+			if(Objectives[i] == null){
+				Objectives[i] = ScriptableObject.CreateInstance<Objective>();
+			}
 		}
 	}
 
-	public bool ReceiveObjectiveTrigger<T>() where T:IObjective {
-		if(CurrentObjective == null){
-			Debug.LogWarning(
-				"Received objective trigger attempt when no objective remains to be completed.  " +
-				"Objective type received: " + typeof(T).FullName, this);
-			return false;
+	void Start(){
+		foreach(Objective objective in Objectives){
+			objective.BindTasks();
 		}
-
-		if (CurrentObjective is T) {
-			CompleteCurrentObjective();
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	private void CompleteCurrentObjective(){
-		IObjective completedObjective = CurrentObjective;
-		Objectives.RemoveAt(0);
-		completedObjective.Complete();
 	}
 }
