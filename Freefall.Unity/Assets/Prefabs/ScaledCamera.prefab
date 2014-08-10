@@ -115,9 +115,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3ffc6596ddbff645b68a93a863d50ef, type: 3}
+  m_Script: {fileID: 11500000, guid: 9cb6001e2868c65409883792dcf60338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TargetToFollow: {fileID: 0}
+  FollowingTarget: 1
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
