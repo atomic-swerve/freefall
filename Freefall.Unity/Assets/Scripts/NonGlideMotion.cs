@@ -29,27 +29,37 @@ public class NonGlideMotion : MonoBehaviour {
 	public void Move(float acceleration, float deceleration) {
 		Vector2 movement = rigidbody2D.velocity;
 
-		if(Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x > -maxNonGlideSpeed) {
-			movement.x -= acceleration;
-		}
-		if(Input.GetAxis("X-Axis") > 0 && rigidbody2D.velocity.x < maxNonGlideSpeed) {
-			movement.x += acceleration; 
-		}
+        if (player.CanMove)
+        {
+            if (Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x > -maxNonGlideSpeed)
+            {
+                movement.x -= acceleration;
+            }
+            if (Input.GetAxis("X-Axis") > 0 && rigidbody2D.velocity.x < maxNonGlideSpeed)
+            {
+                movement.x += acceleration;
+            }
 
-		if(Input.GetAxis("X-Axis") == 0) {
-			if(movement.x < 0) {
-				movement.x += deceleration;
-				if(movement.x > 0) {
-					movement.x = 0;
-				}
-			}
-			if(movement.x > 0) {
-				movement.x -= deceleration;
-				if(movement.x < 0) {
-					movement.x = 0;
-				}
-			}
-		}
+            if (Input.GetAxis("X-Axis") == 0)
+            {
+                if (movement.x < 0)
+                {
+                    movement.x += deceleration;
+                    if (movement.x > 0)
+                    {
+                        movement.x = 0;
+                    }
+                }
+                if (movement.x > 0)
+                {
+                    movement.x -= deceleration;
+                    if (movement.x < 0)
+                    {
+                        movement.x = 0;
+                    }
+                }
+            }
+        }
 
 		rigidbody2D.velocity = movement;
 

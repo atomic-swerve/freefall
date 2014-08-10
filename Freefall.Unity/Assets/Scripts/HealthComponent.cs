@@ -6,6 +6,7 @@ public class HealthComponent : MonoBehaviour {
     public int healthPoints = 5;
     public int maxHealthPoints = 5;
     public bool isEnemy = false;
+    public bool isInvincible = false;
     
 	// Use this for initialization
 	void Start () {
@@ -20,13 +21,23 @@ public class HealthComponent : MonoBehaviour {
     // Damage the game character
     public void Damage()
     {
-        this.healthPoints--;
+        if (!isInvincible)
+        {
+            this.healthPoints--;
+            print("Health: " + healthPoints);
+        }
 
         if (healthPoints <= 0)
         {
             healthPoints = 0;
-            Destroy(gameObject);
-            print("Enemy destroyed");
+            if (isEnemy)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                print("Game Over");
+            }
         }
     }
 

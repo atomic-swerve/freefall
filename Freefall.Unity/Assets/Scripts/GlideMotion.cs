@@ -50,57 +50,74 @@ public class GlideMotion : MonoBehaviour {
 	public void HandleGlideMovement() {
 		Vector2 movement = rigidbody2D.velocity;
 
-		// Accelerate on any axis receiving input.
-		if(Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x > -maxGlideSpeedBase) {
-			EnableDecelerationX = true;
-			movement.x -= glideAcceleration;
-		}
-		if(Input.GetAxis("X-Axis") > 0 && rigidbody2D.velocity.x < maxGlideSpeedBase) {
-			EnableDecelerationX = true;
-			movement.x += glideAcceleration; 
-		}
-		if(Input.GetAxis("Y-Axis") > 0 && rigidbody2D.velocity.y < maxGlideSpeedBase && !playerWindMotion.InWindlessArea) {
-			EnableDecelerationY = true;
-			movement.y += glideAcceleration;
-		}
-		if(Input.GetAxis("Y-Axis") < 0 && rigidbody2D.velocity.y > -maxGlideSpeedBase) {
-			EnableDecelerationY = true;
-			movement.y -= glideAcceleration; 
-		}
+        if (player.CanMove)
+        {
+            // Accelerate on any axis receiving input.
+            if (Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x > -maxGlideSpeedBase)
+            {
+                EnableDecelerationX = true;
+                movement.x -= glideAcceleration;
+            }
+            if (Input.GetAxis("X-Axis") > 0 && rigidbody2D.velocity.x < maxGlideSpeedBase)
+            {
+                EnableDecelerationX = true;
+                movement.x += glideAcceleration;
+            }
+            if (Input.GetAxis("Y-Axis") > 0 && rigidbody2D.velocity.y < maxGlideSpeedBase && !playerWindMotion.InWindlessArea)
+            {
+                EnableDecelerationY = true;
+                movement.y += glideAcceleration;
+            }
+            if (Input.GetAxis("Y-Axis") < 0 && rigidbody2D.velocity.y > -maxGlideSpeedBase)
+            {
+                EnableDecelerationY = true;
+                movement.y -= glideAcceleration;
+            }
 
-		// Decelerate on any axis receiving no input.
-		if(Input.GetAxis("X-Axis") == 0 && EnableDecelerationX) {
-			if(movement.x < 0 && playerWindMotion.WindModifierX >= 0) {
-				movement.x += glideDeceleration;
-				if(movement.x > 0) {
-					EnableDecelerationX = false;
-					movement.x = 0;
-				}
-			}
-			if(movement.x > 0 && playerWindMotion.WindModifierX <= 0) {
-				movement.x -= glideDeceleration;
-				if(movement.x < 0) {
-					EnableDecelerationX = false;
-					movement.x = 0;
-				}
-			}
-		}
-		if(Input.GetAxis("Y-Axis") == 0 && EnableDecelerationY) {
-			if(movement.y < 0 && playerWindMotion.WindModifierY >= 0) {
-				movement.y += glideDeceleration;
-				if(movement.y > 0) {
-					EnableDecelerationY = false;
-					movement.y = 0;
-				}
-			}
-			if(movement.y > 0 && playerWindMotion.WindModifierY <= 0) {
-				movement.y -= glideDeceleration;
-				if(movement.y < 0) {
-					EnableDecelerationY = false;
-					movement.y = 0;
-				}
-			}
-		}
+            // Decelerate on any axis receiving no input.
+            if (Input.GetAxis("X-Axis") == 0 && EnableDecelerationX)
+            {
+                if (movement.x < 0 && playerWindMotion.WindModifierX >= 0)
+                {
+                    movement.x += glideDeceleration;
+                    if (movement.x > 0)
+                    {
+                        EnableDecelerationX = false;
+                        movement.x = 0;
+                    }
+                }
+                if (movement.x > 0 && playerWindMotion.WindModifierX <= 0)
+                {
+                    movement.x -= glideDeceleration;
+                    if (movement.x < 0)
+                    {
+                        EnableDecelerationX = false;
+                        movement.x = 0;
+                    }
+                }
+            }
+            if (Input.GetAxis("Y-Axis") == 0 && EnableDecelerationY)
+            {
+                if (movement.y < 0 && playerWindMotion.WindModifierY >= 0)
+                {
+                    movement.y += glideDeceleration;
+                    if (movement.y > 0)
+                    {
+                        EnableDecelerationY = false;
+                        movement.y = 0;
+                    }
+                }
+                if (movement.y > 0 && playerWindMotion.WindModifierY <= 0)
+                {
+                    movement.y -= glideDeceleration;
+                    if (movement.y < 0)
+                    {
+                        EnableDecelerationY = false;
+                        movement.y = 0;
+                    }
+                }
+            }
+        }
 
 		playerWindMotion.ApplyWindEffect(ref movement);
 

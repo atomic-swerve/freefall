@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour {
 	public bool Grounded { get; set; }
 	public bool Crouching { get; set; }
 	public bool DroppingThroughPlatform { get; set; }
+    public bool CanMove = true;
 
 	// Use this for initialization
 	void Awake () {

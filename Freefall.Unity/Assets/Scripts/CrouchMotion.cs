@@ -24,13 +24,20 @@ public class CrouchMotion : MonoBehaviour {
 	}
 
 	public void HandleCrouchInput() {
-		if(Input.GetAxis("Y-Axis") < 0) {
-			ActivateCrouch();
-		} else {
-			DeactivateCrouch();
-		}
-		if(Input.GetAxis("X-Axis") != 0) {
-			DeactivateCrouch();
-		}
+        if (player.CanMove)
+        {
+            if (Input.GetAxis("Y-Axis") < 0)
+            {
+                ActivateCrouch();
+            }
+            else
+            {
+                DeactivateCrouch();
+            }
+            if (Input.GetAxis("X-Axis") != 0)
+            {
+                DeactivateCrouch();
+            }
+        }
 	}
 }
