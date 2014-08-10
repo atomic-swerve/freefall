@@ -2,16 +2,23 @@
 using System.Collections;
 
 public class GlideMotion : MonoBehaviour {
-	public float maxGlideSpeed = 80f;
+	public float maxGlideSpeedBase = 80f;
 	public float glideAcceleration = 10f;
 	public float glideDeceleration = 3f;
 
 	private PlayerController player;
 	private PlayerGravity playerGravity;
+	private PlayerWindMotion playerWindMotion;
+
+	// These values are used for deciding whether or not to apply deceleration. Deceleration is never applied against wind, and is only
+	// applied between a player releasing directional button and the player's velocity reaching zero.
+	private bool decelerateOnReleaseX = false;
+	private bool decelerateOnReleaseY = false;
 
 	void Awake () {
 		player = GetComponent<PlayerController>();
 		playerGravity = GetComponent<PlayerGravity>();
+		playerWindMotion = GetComponent<PlayerWindMotion>();
 	}
 
 	public void HandleGlideInput() {
@@ -33,65 +40,80 @@ public class GlideMotion : MonoBehaviour {
 		player.Gliding = false;
 	}
 
-	public void Glide() {
+	public void HandleGlideMovement() {
 		Vector2 movement = rigidbody2D.velocity;
 
 		// Accelerate on any axis receiving input.
-		if(Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x > -maxGlideSpeed) {
+		if(Input.GetAxis("X-Axis") < 0 && rigidbody2D.velocity.x > -maxGlideSpeedBase) {
+			decelerateOnReleaseX = true;
 			movement.x -= glideAcceleration;
-			if(movement.x < -maxGlideSpeed) {
-				movement.x = -maxGlideSpeed;
-			} 
 		}
-		if(Input.GetAxis("X-Axis") > 0 && rigidbody2D.velocity.x < maxGlideSpeed) {
+		if(Input.GetAxis("X-Axis") > 0 && rigidbody2D.velocity.x < maxGlideSpeedBase) {
+			decelerateOnReleaseX = true;
 			movement.x += glideAcceleration; 
-			if(movement.x > maxGlideSpeed) {
-				movement.x = maxGlideSpeed;
-			} 
 		}
-		if(Input.GetAxis("Y-Axis") > 0 && rigidbody2D.velocity.y < maxGlideSpeed) {
+		if(Input.GetAxis("Y-Axis") > 0 && rigidbody2D.velocity.y < maxGlideSpeedBase && !playerWindMotion.InWindlessArea) {
+			decelerateOnReleaseY = true;
 			movement.y += glideAcceleration;
-			if(movement.y > maxGlideSpeed) {
-				movement.y = maxGlideSpeed;
-			}  
 		}
-		if(Input.GetAxis("Y-Axis") < 0 && rigidbody2D.velocity.y > -maxGlideSpeed) {
+		if(Input.GetAxis("Y-Axis") < 0 && rigidbody2D.velocity.y > -maxGlideSpeedBase) {
+			decelerateOnReleaseY = true;
 			movement.y -= glideAcceleration; 
-			if(movement.y < -maxGlideSpeed) {
-				movement.y = -maxGlideSpeed;
-			} 
 		}
 
 		// Decelerate on any axis receiving no input.
-		if(Input.GetAxis("X-Axis") == 0) {
-			if(movement.x < 0) {
+		if(Input.GetAxis("X-Axis") == 0 && decelerateOnReleaseX) {
+			if(movement.x < 0 && playerWindMotion.WindModifierX >= 0) {
 				movement.x += glideDeceleration;
 				if(movement.x > 0) {
+					decelerateOnReleaseX = false;
 					movement.x = 0;
 				}
 			}
-			if(movement.x > 0) {
+			if(movement.x > 0 && playerWindMotion.WindModifierX <= 0) {
 				movement.x -= glideDeceleration;
 				if(movement.x < 0) {
+					decelerateOnReleaseX = false;
 					movement.x = 0;
 				}
 			}
 		}
-		if(Input.GetAxis("Y-Axis") == 0) {
-			if(movement.y < 0) {
+		if(Input.GetAxis("Y-Axis") == 0 && decelerateOnReleaseY) {
+			if(movement.y < 0 && playerWindMotion.WindModifierY >= 0) {
 				movement.y += glideDeceleration;
 				if(movement.y > 0) {
+					decelerateOnReleaseY = false;
 					movement.y = 0;
 				}
 			}
-			if(movement.y > 0) {
+			if(movement.y > 0 && playerWindMotion.WindModifierY <= 0) {
 				movement.y -= glideDeceleration;
 				if(movement.y < 0) {
+					decelerateOnReleaseY = false;
 					movement.y = 0;
 				}
 			}
 		}
 
+		playerWindMotion.ApplyWindEffect(ref movement);
+
+        EnforceMaximumSpeed(ref movement, maxGlideSpeedBase + playerWindMotion.WindModifierX, maxGlideSpeedBase + playerWindMotion.WindModifierY);
+
 		rigidbody2D.velocity = movement;
 	}
+
+    private void EnforceMaximumSpeed(ref Vector2 movement, float maxGlideSpeedX, float maxGlideSpeedY) {
+        if(movement.x > maxGlideSpeedX) {
+            movement.x = maxGlideSpeedX;
+        }
+        if(movement.x < -maxGlideSpeedX) {
+            movement.x = -maxGlideSpeedX;
+        }
+        if(movement.y > maxGlideSpeedY) {
+            movement.y = maxGlideSpeedY;
+        }
+        if(movement.y < -maxGlideSpeedY) {
+            movement.y = -maxGlideSpeedY;
+        }
+    }
 }

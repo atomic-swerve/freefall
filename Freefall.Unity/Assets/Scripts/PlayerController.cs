@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Start() {
+		rigidbody2D.interpolation = RigidbodyInterpolation2D.Interpolate;
 		Gliding = true; // Start with glide enabled for testing.
 	}
 	
@@ -76,15 +77,13 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate() {	
 		if(Gliding) {
-			glideMotion.Glide();
+			glideMotion.HandleGlideMovement();
 		} else {
-			nonGlideMotion.Move();
+			nonGlideMotion.HandleNonGlideMovement();
 		} 
 
 		if(Jumping) {
-			playerGravity.EnableGravity();
-			jumpMotion.Jump();
-			Jumping = false;
+			jumpMotion.HandleJumpState();
 		}
 	}
 
