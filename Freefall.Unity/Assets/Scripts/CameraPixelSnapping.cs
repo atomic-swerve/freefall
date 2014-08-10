@@ -12,11 +12,11 @@ public class CameraPixelSnapping : PixelatedMotion {
 
 	protected override float GetXOffset ()
 	{
-		return 0.5f;
+		return 0.52f;
 	}
 
 	protected override float GetYOffset ()
 	{
-		return -0.5f;
+		return -0.52f;
 	}
 }
