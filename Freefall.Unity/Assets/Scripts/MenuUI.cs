@@ -10,21 +10,22 @@ public class MenuUI : MonoBehaviour {
 	private bool yReleased = true;
 
 	void Update () {
-		if (yReleased && Input.GetButtonDown("Y-Axis")) {
-			yReleased = false;
-			float y = Input.GetAxis("Y-Axis");
-			if (y < 0) {
-				currentButtonIndex = Mathf.Min(currentButtonIndex + 1, MenuButtons.Length - 1);
-			} else if (y > 0) {
-				currentButtonIndex = Mathf.Max(currentButtonIndex - 1, 0);
-			}
-		} else if (Input.GetButtonUp("Y-Axis")) {
-			yReleased = true;
-		}
+						if (yReleased && Input.GetButtonDown ("Y-Axis")) {
+								yReleased = false;
+								float y = Input.GetAxis ("Y-Axis");
+								if (y < 0) {
+										currentButtonIndex = Mathf.Min (currentButtonIndex + 1, MenuButtons.Length - 1);
+								} else if (y > 0) {
+										currentButtonIndex = Mathf.Max (currentButtonIndex - 1, 0);
+								}
+						} else if (Input.GetButtonUp ("Y-Axis")) {
+								yReleased = true;
+						}
 
-		foreach (MenuButtonUI button in MenuButtons) {
-			button.Selected = false;
-		}
-		MenuButtons[currentButtonIndex].Selected = true;
-	}
+						foreach (MenuButtonUI button in MenuButtons) {
+								button.Selected = false;
+						}
+						MenuButtons [currentButtonIndex].Selected = true;
+				}
+
 }

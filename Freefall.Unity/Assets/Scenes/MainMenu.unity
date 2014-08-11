@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Selected: 0
-  SceneName: Scenes/Playgrounds/LevelGenTest
+  SceneName: level1
 --- !u!95 &47262642
 Animator:
   serializedVersion: 3
@@ -153,6 +153,45 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_HasTransformHierarchy: 1
+--- !u!1 &147391643
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 147391645}
+  - 114: {fileID: 147391644}
+  m_Layer: 0
+  m_Name: Audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &147391644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 147391643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adea1c1b2f62fd2499a3213f5c45d7cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &147391645
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 147391643}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.00999999, y: -5.51000023, z: -9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
 --- !u!1 &296213381
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,6 +280,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TextBox: {fileID: 1140346610}
   MainMenu: {fileID: 296213383}
+--- !u!1 &518625172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 518625174}
+  - 114: {fileID: 518625173}
+  m_Layer: 0
+  m_Name: MusicStart
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &518625173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 518625172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97344a5d6c0af5544a1156f00f79e0cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &518625174
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 518625172}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.00999999, y: -5.51000023, z: -9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
 --- !u!1 &797062901
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,7 +648,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: .606293261, g: .730806649, b: .926470578, a: .0196078438}
+  m_BackGroundColor: {r: 1, g: .968627453, b: .482352942, a: .0196078438}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -655,15 +733,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: 999f85c24da8b8146986518e3da356b0, type: 2}
       propertyPath: m_BackGroundColor.r
-      value: .606293261
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: 999f85c24da8b8146986518e3da356b0, type: 2}
       propertyPath: m_BackGroundColor.g
-      value: .730806649
+      value: .968627453
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: 999f85c24da8b8146986518e3da356b0, type: 2}
       propertyPath: m_BackGroundColor.b
-      value: .926470578
+      value: .482352942
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 999f85c24da8b8146986518e3da356b0, type: 2}
       propertyPath: m_IsActive

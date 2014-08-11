@@ -7,6 +7,10 @@ public class ObjectiveManager : MonoBehaviour {
 	private IList<Objective> ObjectiveList;
 
 	void OnValidate(){
+		if(Objectives == null){
+			return;
+		}
+		
 		for(int i = 0; i < Objectives.Length; i++){
 			if(Objectives[i] == null){
 				Objectives[i] = new Objective();

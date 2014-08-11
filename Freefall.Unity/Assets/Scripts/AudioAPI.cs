@@ -16,56 +16,56 @@ public class AudioAPI : MonoBehaviour  {
         Instance.audioSource = gameObject.AddComponent<AudioSource>();
     }
 
-    public void PlayTheme(string audioName)
+    public static void PlayTheme(string audioName)
     {
         string audioIntroName = audioName + "_intro";
         string audioLoopName = audioName + "_loop";
 
-        StartCoroutine(PlayConnectedTheme(audioIntroName, audioLoopName));
+        Instance.StartCoroutine(Instance.PlayConnectedTheme(audioIntroName, audioLoopName));
     }
 
-    public float PlaySong(string audioName, bool looping)
+    public static float PlaySong(string audioName, bool looping)
     {
         AudioClip audioClip;
 
-        if (!audioHashtable.ContainsKey(audioName))
-            LoadAudio(audioName);
+        if (!Instance.audioHashtable.ContainsKey(audioName))
+            Instance.LoadAudio(audioName);
 
-        SetAudioLooping(looping);
+        Instance.SetAudioLooping(looping);
 
-        audioClip = (AudioClip)audioHashtable[audioName];
+        audioClip = (AudioClip)Instance.audioHashtable[audioName];
         Instance.audioSource.clip = audioClip;
         Instance.audioSource.Play();
 
         return audioClip.length;
     }
 
-    public void StopSound()
+    public static void StopSound()
     {
         if (Instance.audioSource.isPlaying)
             Instance.audioSource.Stop();
     }
 
-    public void PauseSound(AudioSource audio)
+    public static void PauseSound(AudioSource audio)
     {
         if (Instance.audioSource.isPlaying)
             Instance.audioSource.Pause();
     }
 
-    public void ResumeSound(AudioSource audio)
+    public static void ResumeSound(AudioSource audio)
     {
         if (!Instance.audioSource.isPlaying && Instance.audioSource.clip != null)
             Instance.audioSource.Play();
     }
 
-    public void PlaySFX(string audioName)
+    public static void PlaySFX(string audioName)
     {
         AudioClip audioClip;
 
-        if (!audioHashtable.ContainsKey(audioName))
-            LoadAudio(audioName);
+        if (!Instance.audioHashtable.ContainsKey(audioName))
+            Instance.LoadAudio(audioName);
 
-        audioClip = (AudioClip)audioHashtable[audioName];
+        audioClip = (AudioClip)Instance.audioHashtable[audioName];
         Instance.audioSource.PlayOneShot(audioClip);
     }
 
