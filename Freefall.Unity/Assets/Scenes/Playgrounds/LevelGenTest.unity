@@ -40883,6 +40883,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   facingVector: {x: 1, y: 0}
+  CanMove: 1
 --- !u!50 &1760650023
 Rigidbody2D:
   m_ObjectHideFlags: 0
@@ -41033,9 +41034,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c3ee71a2437da4fbc7e0b5648e0bc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockBackX: 0
-  knockBackY: 0
+  knockBackX: -120
+  knockBackY: 30
   invincibleTime: 2
+  moveDisableTime: .5
 --- !u!114 &1760650034
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,14 +30,7 @@ public class HealthComponent : MonoBehaviour {
         if (healthPoints <= 0)
         {
             healthPoints = 0;
-            if (isEnemy)
-            {
-                Destroy(gameObject);
-            }
-            else
-            {
-                print("Game Over");
-            }
+            Destroy(gameObject);
         }
     }
 

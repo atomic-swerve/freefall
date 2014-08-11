@@ -10,9 +10,10 @@ public class PlayerDamage : MonoBehaviour {
     public int knockBackX = -120;
     public int knockBackY = 50;
     public float invincibleTime = 2;
-    public float moveDisableTime = 0.5;
+    public float moveDisableTime = 0.5f;
 
     // Use this for initialization
+
     void Start()
     {
         player = this.GetComponent<PlayerController>();
@@ -23,7 +24,7 @@ public class PlayerDamage : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        //TestDamageKnockback();
+        TestDamageKnockback();
     }
 
     public void DamagePlayer()
@@ -37,7 +38,17 @@ public class PlayerDamage : MonoBehaviour {
         rigidbody2D.velocity = new Vector2(knockBackX, knockBackY);
 
         playerHealth.Damage();
+
+        if (playerHealth.healthPoints == 0)
+            PlayerDeath();
+
         StartCoroutine(TurnInvincible(invincibleTime));
+    }
+
+    public void PlayerDeath()
+    {
+        audioAPI.StopSound();
+        audioAPI.PlaySong("freefall_title", false);
     }
 
     private IEnumerator TurnInvincible(float seconds)
