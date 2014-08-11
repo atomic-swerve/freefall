@@ -52,7 +52,7 @@ public class CameraMotion : MonoBehaviour {
 	void Update () {
 		if ((TargetToFollow != null) && FollowingTarget) {
 			Vector3 targetPos = TargetToFollow.transform.position;
-			transform.position = new Vector3(targetPos.x, targetPos.y, transform.position.z);
+			transform.position = new Vector3(targetPos.x, targetPos.y + 16, transform.position.z);
 		} else if (interpolating) {
 			Vector2 pos;
 			float currentTime = Time.time;
