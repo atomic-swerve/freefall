@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour {
 	private GroundChecker groundChecker;
 	private PlayerGravity playerGravity;
 
+
 	// Player State
 	public bool Gliding { get; set; }
 	public bool Jumping { get; set; }
@@ -96,4 +97,16 @@ public class PlayerController : MonoBehaviour {
 			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);			
 		}
 	}
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        HealthCollectableController healthCollectable = collision.gameObject.GetComponent<HealthCollectableController>();
+
+        if (healthCollectable != null)
+        {
+            HealthComponent playerHealth = this.GetComponent<HealthComponent>();
+            playerHealth.healthPoints = healthCollectable.Heal(playerHealth.healthPoints, playerHealth.maxHealthPoints);
+            print("Player total health: " + playerHealth.healthPoints);
+        }
+    }
 }
