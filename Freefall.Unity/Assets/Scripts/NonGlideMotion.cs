@@ -19,9 +19,18 @@ public class NonGlideMotion : MonoBehaviour {
 	}
 
 	public void HandleNonGlideMovement() {
+		Animator animator = GetComponent<Animator>();
 		if(player.Grounded) {
+			Vector2 movement = rigidbody2D.velocity;
+			if (Mathf.Abs(movement.magnitude) >= float.Epsilon) {
+				animator.SetFloat("GroundSpeed", 1);
+			} else {
+				animator.SetFloat("GroundSpeed", 0);
+			}
+
 			Move(groundAcceleration, groundDeceleration);
 		} else {
+			animator.SetFloat("GroundSpeed", 0);
 			Move(airAcceleration, airDeceleration);
 		}
 	}

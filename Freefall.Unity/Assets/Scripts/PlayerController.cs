@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Start() {
 		rigidbody2D.interpolation = RigidbodyInterpolation2D.Interpolate;
-		Gliding = true; // Start with glide enabled for testing.
+		//Gliding = true; // Start with glide enabled for testing.
 	}
 	
 	// Update is called once per frame
@@ -54,7 +54,18 @@ public class PlayerController : MonoBehaviour {
 			dropThrough.DeactivateDrop();
 		}
 
+		if ((facingVector.x > 0) && (rigidbody2D.velocity.x <= -float.Epsilon)) {
+			facingVector = new Vector2(-1, 0);
+			transform.localScale = new Vector3(-1, 1, 1);
+		} else if ((facingVector.x < 0) && (rigidbody2D.velocity.x >= float.Epsilon)) {
+			facingVector = new Vector2(1, 0);
+			transform.localScale = new Vector3(1, 1, 1);
+		}
+
+		Animator animator = GetComponent<Animator>();
 		if(Grounded) {
+			animator.SetBool("Grounded", true);
+			animator.SetBool("Jumping", false);
 			dropThrough.HandleDropInput();
 
 			if(!DroppingThroughPlatform) {
@@ -66,6 +77,7 @@ public class PlayerController : MonoBehaviour {
 				crouchMotion.HandleCrouchInput();				
 			}
 		} else {
+			animator.SetBool("Grounded", false);
 			// Enable gravity for free fall.
 			if(!Gliding) {
 				playerGravity.EnableGravity();

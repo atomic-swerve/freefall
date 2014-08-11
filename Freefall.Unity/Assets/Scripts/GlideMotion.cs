@@ -43,15 +43,18 @@ public class GlideMotion : MonoBehaviour {
 		playerGravity.DisableGravity();
 		EnableDecelerationY = true;
 		EnableDecelerationX = true;
-		box.center = new Vector2 (0, 16);
-		box.size = new Vector2 (28, 24);
 		player.Gliding = true;
+
+		Animator animator = GetComponent<Animator>();
+		animator.SetBool("Gliding", true);
+		animator.SetBool("Jumping", false);
 	}
 
 	public void DeactivateGlide() {
-		box.center = new Vector2 (0, 14);
-		box.size = new Vector2 (10, 28);
 		player.Gliding = false;
+		
+		Animator animator = GetComponent<Animator>();
+		animator.SetBool("Gliding", false);
 	}
 
 	public void HandleGlideMovement() {
