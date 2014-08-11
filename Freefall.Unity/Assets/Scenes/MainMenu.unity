@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Selected: 0
-  SceneName: Scenes/Playgrounds/LevelGenTest
+  SceneName: level1
 --- !u!95 &47262642
 Animator:
   serializedVersion: 3
@@ -570,7 +570,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: .606293261, g: .730806649, b: .926470578, a: .0196078438}
+  m_BackGroundColor: {r: 1, g: .968627453, b: .482352942, a: .0196078438}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -655,15 +655,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: 999f85c24da8b8146986518e3da356b0, type: 2}
       propertyPath: m_BackGroundColor.r
-      value: .606293261
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: 999f85c24da8b8146986518e3da356b0, type: 2}
       propertyPath: m_BackGroundColor.g
-      value: .730806649
+      value: .968627453
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: 999f85c24da8b8146986518e3da356b0, type: 2}
       propertyPath: m_BackGroundColor.b
-      value: .926470578
+      value: .482352942
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 999f85c24da8b8146986518e3da356b0, type: 2}
       propertyPath: m_IsActive
