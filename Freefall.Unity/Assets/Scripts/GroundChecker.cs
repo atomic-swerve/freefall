@@ -8,11 +8,15 @@ public class GroundChecker : MonoBehaviour {
 	public float colliderToGroundDistance = .2f;
 
 	private BoxCollider2D boxCollider2D;
-	private CircleCollider2D circleCollider2D;
+
+	private PlayerController player;
+
+	public float margin = 1;
+	private int verticalRays = 4;
 
 	void Awake() {
+		player = GetComponent<PlayerController>();
 		boxCollider2D = GetComponent<BoxCollider2D>();
-		circleCollider2D = GetComponent<CircleCollider2D>();
 	}
 
 	public bool CheckGrounded(int groundLayerIndex) {
@@ -38,6 +42,41 @@ public class GroundChecker : MonoBehaviour {
 			&& !Physics2D.Raycast(boxBottomCenter, upwardsVector, .2f, 1 << groundLayerIndex)
 			&& !Physics2D.Raycast(boxLowerLeftCorner, upwardsVector, .2f, 1 << groundLayerIndex)
 			&& !Physics2D.Raycast(boxLowerRightCorner, upwardsVector, .2f, 1 << groundLayerIndex);
+	}
+
+	public void CheckGroundNew(int groundLayerIndex) {
+		Rect box = new Rect(boxCollider2D.bounds.min.x, boxCollider2D.bounds.min.y, boxCollider2D.bounds.size.x, boxCollider2D.bounds.size.y);
+
+		Vector2 startPoint = new Vector2(box.xMin + margin, box.center.y);
+		Vector2 endPoint = new Vector2(box.xMax - margin, box.center.y);
+
+		Vector2 down = new Vector2(0, -1);
+
+		float distance = box.height/2 + margin;
+
+		bool connected = false;
+
+		for(int i = 0; i < verticalRays; i++) {
+			float lerpAmount = (float)i / ((float) verticalRays - 1);
+			Vector2 origin = Vector2.Lerp(startPoint, endPoint, lerpAmount);
+
+			RaycastHit2D hit = Physics2D.Raycast(origin, down, distance, 1 << groundLayerIndex);
+			Debug.DrawRay(origin, -Vector2.up * distance, Color.green);
+
+			if(hit.collider != null) {
+				connected = true;
+			}
+
+			if(connected && !player.Grounded) {
+				player.Grounded = true;
+				transform.position = new Vector2(transform.position.x, hit.collider.bounds.max.y + .2f);
+				break;
+			}
+		}
+
+		if(!connected) {
+			player.Grounded = false;
+		}
 	}
 
 	public RaycastHit2D[] GetHits(int groundLayerIndex) {
