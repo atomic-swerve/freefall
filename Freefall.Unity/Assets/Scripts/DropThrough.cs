@@ -10,7 +10,6 @@ public class DropThrough : MonoBehaviour {
 	private PlayerGravity gravity;
 	private GroundChecker groundChecker;
 	private BoxCollider2D boxCollider2D;
-	private CircleCollider2D circleCollider2D;
 
 	private float originalBoxCollider2DSizeX;
 
@@ -25,7 +24,6 @@ public class DropThrough : MonoBehaviour {
 		gravity = GetComponent<PlayerGravity>();
 		groundChecker = GetComponent<GroundChecker>();
 		boxCollider2D = GetComponent<BoxCollider2D>();
-		circleCollider2D = GetComponent<CircleCollider2D>();
 		ignoredTiles = new List<Collider2D>();
 	}
 
@@ -46,7 +44,6 @@ public class DropThrough : MonoBehaviour {
 		// Ignore tiles
 		foreach (RaycastHit2D hit in hits) {
 			Physics2D.IgnoreCollision(boxCollider2D, hit.collider, true);
-			Physics2D.IgnoreCollision(circleCollider2D, hit.collider, true);
 			ignoredTiles.Add(hit.collider);
 		}
 	}
@@ -58,7 +55,6 @@ public class DropThrough : MonoBehaviour {
 		// Unignore tiles
 		foreach (Collider2D collider in ignoredTiles) {
 			Physics2D.IgnoreCollision(boxCollider2D, collider, false);
-			Physics2D.IgnoreCollision(circleCollider2D, collider, false);
 		}
 
 		ignoredTiles = new List<Collider2D>();
