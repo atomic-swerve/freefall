@@ -11,7 +11,7 @@ public class GroundChecker : MonoBehaviour {
 
 	private PlayerController player;
 
-	public float margin = 1;
+	private float margin = 1;
 	private int verticalRays = 4;
 
 	void Awake() {
