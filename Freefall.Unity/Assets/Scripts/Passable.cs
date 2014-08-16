@@ -9,7 +9,6 @@ public class Passable : MonoBehaviour {
 
 	public PlayerController player;
 	private BoxCollider2D boxCollider2D;
-	private CircleCollider2D circleCollider2D;
 
 	private Vector2 downwardsVector;
 	private Vector2 upwardsVector;
@@ -21,7 +20,6 @@ public class Passable : MonoBehaviour {
 		player = GetComponent<PlayerController>();
 
 		boxCollider2D = GetComponent<BoxCollider2D>();
-		circleCollider2D = GetComponent<CircleCollider2D>();
 	}
 
 	void Start() {
@@ -74,7 +72,6 @@ public class Passable : MonoBehaviour {
 		 !player.DroppingThroughPlatform) {
 			foreach(RaycastHit2D hit in downHits) {
 				Physics2D.IgnoreCollision(boxCollider2D, hit.collider, false);
-				Physics2D.IgnoreCollision(circleCollider2D, hit.collider, false);
 			}
 		}
 	}
@@ -95,7 +92,6 @@ public class Passable : MonoBehaviour {
 		// Disable collisions for tiles found above player so that player can jump through them.
 		foreach(RaycastHit2D hit in upHits) {
 			Physics2D.IgnoreCollision(boxCollider2D, hit.collider, true);
-			Physics2D.IgnoreCollision(circleCollider2D, hit.collider, true);
 		}
 	}
 
@@ -114,7 +110,6 @@ public class Passable : MonoBehaviour {
 
 		foreach(RaycastHit2D hit in lateralHits) {
 			Physics2D.IgnoreCollision(boxCollider2D, hit.collider, true);
-			Physics2D.IgnoreCollision(circleCollider2D, hit.collider, true);
 		}
 
 	}

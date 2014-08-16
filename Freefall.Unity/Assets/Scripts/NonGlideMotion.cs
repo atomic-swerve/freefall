@@ -11,11 +11,9 @@ public class NonGlideMotion : MonoBehaviour {
 	public float airDeceleration = 3f;
 
 	private PlayerController player;
-	private PlayerWindMotion playerWindMotion;
 
 	void Awake() {
 		player = GetComponent<PlayerController>();
-		playerWindMotion = GetComponent<PlayerWindMotion>();
 	}
 
 	public void HandleNonGlideMovement() {
