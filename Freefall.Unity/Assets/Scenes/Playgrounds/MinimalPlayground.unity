@@ -4347,8 +4347,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afacde989e29ab44bb4c37d029f48e08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliderToGroundDistance: .200000003
+  groundCheckRayLength: 1
   margin: 2
+  numVerticalRays: 4
 --- !u!114 &1793393658
 MonoBehaviour:
   m_ObjectHideFlags: 0
