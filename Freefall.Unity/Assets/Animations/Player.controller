@@ -544,6 +544,10 @@ Transition:
     m_ConditionEvent: Grounded
     m_EventTreshold: 0
     m_ExitTime: .899999976
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jumping
+    m_EventTreshold: 0
+    m_ExitTime: .899999976
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
@@ -597,7 +601,7 @@ State:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: alex_walk_0
+  m_Name: alex_walk
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
@@ -612,7 +616,7 @@ State:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: alex_stand_1
+  m_Name: alex_stand_wind
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
@@ -627,7 +631,7 @@ State:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: alex_jump_1
+  m_Name: alex_jump_wind
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
@@ -642,7 +646,7 @@ State:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: alex_crouch_1
+  m_Name: alex_crouch_wind
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
@@ -657,7 +661,7 @@ State:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: alex_crouch_0
+  m_Name: alex_crouch_windless
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
@@ -687,7 +691,7 @@ State:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: alex_jump_0
+  m_Name: alex_jump_windless
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
@@ -702,7 +706,7 @@ State:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: alex_run_0
+  m_Name: alex_run
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
@@ -717,7 +721,7 @@ State:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: alex_glide_1
+  m_Name: alex_glide_wind
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
@@ -732,7 +736,7 @@ State:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: alex_stand_0
+  m_Name: alex_stand_windless
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
@@ -747,7 +751,7 @@ State:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: alex_glide_0
+  m_Name: alex_glide_windless
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
